@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="BookNest Admin Dashboard — Manage the college library catalogue: add, edit, delete, search and browse books." />
+  <title>BookNest | Admin Book Management</title>
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     SIDEBAR
+════════════════════════════════════════════════════════ -->
+<aside class="sidebar" id="sidebar" role="navigation" aria-label="Admin navigation">
+  <div class="sidebar-logo">
+    <div class="logo-icon" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <span>BookNest</span>
+      <small>Admin Portal</small>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Module 3 — Books</div>
+
+    <div class="nav-item active" id="navBooks" role="button" tabindex="0" aria-current="page">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+      </svg>
+      Book Catalogue
+      <span class="badge" id="navBooksBadge">—</span>
+    </div>
+
+    <div class="nav-section-label" style="margin-top:16px">Other Modules</div>
+
+    <div class="nav-item" id="navModule1" title="Module 1 — handled by another team member">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+      </svg>
+      UI / Layout <small style="font-size:0.65rem;opacity:0.5">(Module 1)</small>
+    </div>
+
+    <div class="nav-item" id="navModule2" title="Module 2 — handled by another team member">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+      </svg>
+      Login &amp; Access <small style="font-size:0.65rem;opacity:0.5">(Module 2)</small>
+    </div>
+
+    <div class="nav-item" id="navModule4" title="Module 4 — handled by another team member">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+      </svg>
+      Circulation <small style="font-size:0.65rem;opacity:0.5">(Module 4)</small>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="admin-avatar" aria-hidden="true">AD</div>
+    <div class="admin-info">
+      <div class="name">Admin</div>
+      <div class="role">Library Administrator</div>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════════════════
+     MAIN WRAPPER
+════════════════════════════════════════════════════════ -->
+<div class="main-wrapper">
+
+  <!-- Top Bar -->
+  <header class="topbar" role="banner">
+    <button class="hamburger" id="hamburger" aria-label="Toggle sidebar" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="topbar-title">
+      Book Management
+      <div class="topbar-subtitle">Module 3 — Book Master Data</div>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-primary" id="btnAddBook" aria-label="Add new book">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Add Book
+      </button>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="content" id="mainContent" role="main">
+
+    <!-- Stats Cards -->
+    <section class="stats-grid" aria-label="Library statistics">
+      <div class="stat-card">
+        <div class="stat-icon purple" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <div class="value" id="statTotalBooks">—</div>
+          <div class="label">Total Books</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <div class="value" id="statAvailable">—</div>
+          <div class="label">Available Now</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon amber" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <div class="value" id="statUnavailable">—</div>
+          <div class="label">Fully Issued</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon blue" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <div class="value" id="statGenres">—</div>
+          <div class="label">Genres</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Toolbar -->
+    <div class="books-toolbar" role="search" aria-label="Book search and filters">
+      <div class="search-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input
+          type="search"
+          id="searchInput"
+          placeholder="Search by title, author, ISBN, publisher…"
+          autocomplete="off"
+          aria-label="Search books"
+        />
+      </div>
+
+      <select class="filter-select" id="genreFilter" aria-label="Filter by genre">
+        <option value="">All Genres</option>
+        <option value="Fiction">Fiction</option>
+        <option value="Dystopian Fiction">Dystopian Fiction</option>
+        <option value="Classic Fiction">Classic Fiction</option>
+        <option value="Fantasy">Fantasy</option>
+        <option value="Mystery/Thriller">Mystery / Thriller</option>
+        <option value="Philosophical Fiction">Philosophical Fiction</option>
+        <option value="Science">Science</option>
+        <option value="Non-Fiction">Non-Fiction</option>
+        <option value="History">History</option>
+        <option value="Biography">Biography</option>
+        <option value="Computer Science">Computer Science</option>
+        <option value="Mathematics">Mathematics</option>
+        <option value="Engineering">Engineering</option>
+      </select>
+
+      <select class="filter-select" id="statusFilter" aria-label="Filter by availability">
+        <option value="">All Status</option>
+        <option value="available">Available</option>
+        <option value="unavailable">Fully Issued</option>
+      </select>
+    </div>
+
+    <!-- Book Table -->
+    <div class="table-card" role="region" aria-label="Books catalogue">
+      <div class="table-scroll">
+        <table class="books-table" id="booksTable">
+          <thead>
+            <tr>
+              <th data-col="title" scope="col">Book</th>
+              <th data-col="author" scope="col">Author</th>
+              <th data-col="genre" scope="col">Genre</th>
+              <th data-col="year" scope="col">Year</th>
+              <th data-col="available" scope="col">Availability</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="booksTableBody">
+            <tr>
+              <td colspan="6">
+                <div class="table-loading">
+                  <div class="spinner"></div>
+                  <p>Loading books…</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination" id="paginationBar" role="navigation" aria-label="Table pagination">
+        <div class="pagination-info">Loading…</div>
+        <div class="pagination-controls"></div>
+      </div>
+    </div>
+
+  </main><!-- /main -->
+</div><!-- /main-wrapper -->
+
+
+<!-- ═══════════════════════════════════════════════════
+     ADD / EDIT BOOK MODAL
+════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="bookModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+
+    <div class="modal-header">
+      <div>
+        <h2 class="modal-title" id="modalTitle">Add New Book</h2>
+        <p class="modal-subtitle" id="modalSubtitle">Fill in the details below to add a book to the catalogue</p>
+      </div>
+      <button class="modal-close" data-close-modal="bookModal" aria-label="Close modal">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+    <form class="modal-body" id="bookForm" novalidate autocomplete="off">
+      <div class="form-grid">
+
+        <!-- ISBN -->
+        <div class="form-group">
+          <label class="form-label" for="fieldIsbn">ISBN <span class="required">*</span></label>
+          <input type="text" id="fieldIsbn" class="form-control" data-validate="isbn"
+                 placeholder="e.g. 978-0-06-112008-4" maxlength="20" />
+          <div class="form-error" data-error="isbn"></div>
+          <div class="form-hint">ISBN-10 or ISBN-13 accepted</div>
+        </div>
+
+        <!-- Year -->
+        <div class="form-group">
+          <label class="form-label" for="fieldYear">Publication Year</label>
+          <input type="number" id="fieldYear" class="form-control" data-validate="year"
+                 placeholder="e.g. 2023" min="1000" max="2030" />
+          <div class="form-error" data-error="year"></div>
+        </div>
+
+        <!-- Title -->
+        <div class="form-group full">
+          <label class="form-label" for="fieldTitle">Book Title <span class="required">*</span></label>
+          <input type="text" id="fieldTitle" class="form-control" data-validate="title"
+                 placeholder="Enter the full book title" maxlength="255" />
+          <div class="form-error" data-error="title"></div>
+        </div>
+
+        <!-- Author -->
+        <div class="form-group">
+          <label class="form-label" for="fieldAuthor">Author <span class="required">*</span></label>
+          <input type="text" id="fieldAuthor" class="form-control" data-validate="author"
+                 placeholder="e.g. J.K. Rowling" maxlength="255" />
+          <div class="form-error" data-error="author"></div>
+        </div>
+
+        <!-- Publisher -->
+        <div class="form-group">
+          <label class="form-label" for="fieldPublisher">Publisher</label>
+          <input type="text" id="fieldPublisher" class="form-control" data-validate="publisher"
+                 placeholder="e.g. Penguin Books" maxlength="255" />
+          <div class="form-error" data-error="publisher"></div>
+        </div>
+
+        <!-- Genre -->
+        <div class="form-group">
+          <label class="form-label" for="fieldGenre">Genre</label>
+          <select id="fieldGenre" class="form-control filter-select" data-validate="genre">
+            <option value="">— Select Genre —</option>
+            <option value="Fiction">Fiction</option>
+            <option value="Dystopian Fiction">Dystopian Fiction</option>
+            <option value="Classic Fiction">Classic Fiction</option>
+            <option value="Fantasy">Fantasy</option>
+            <option value="Mystery/Thriller">Mystery / Thriller</option>
+            <option value="Philosophical Fiction">Philosophical Fiction</option>
+            <option value="Science">Science</option>
+            <option value="Non-Fiction">Non-Fiction</option>
+            <option value="History">History</option>
+            <option value="Biography">Biography</option>
+            <option value="Computer Science">Computer Science</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Engineering">Engineering</option>
+            <option value="Other">Other</option>
+          </select>
+          <div class="form-error" data-error="genre"></div>
+        </div>
+
+        <!-- Total Copies -->
+        <div class="form-group">
+          <label class="form-label" for="fieldTotal_copies">Total Copies <span class="required">*</span></label>
+          <input type="number" id="fieldTotal_copies" class="form-control" data-validate="total_copies"
+                 placeholder="e.g. 5" min="1" max="9999" value="1" />
+          <div class="form-error" data-error="total_copies"></div>
+        </div>
+
+        <!-- Available (edit only) -->
+        <div class="form-group" style="display:none">
+          <label class="form-label" for="fieldAvailable">Available Copies</label>
+          <input type="number" id="fieldAvailable" class="form-control" data-validate="available"
+                 placeholder="e.g. 3" min="0" max="9999" />
+          <div class="form-error" data-error="available"></div>
+          <div class="form-hint">Must not exceed total copies</div>
+        </div>
+
+        <!-- Cover URL + Preview -->
+        <div class="form-group full">
+          <label class="form-label" for="fieldCover_url">Cover Image URL</label>
+          <div class="cover-preview-wrap">
+            <div class="cover-preview" id="formCoverPreview">📚</div>
+            <div style="flex:1">
+              <input type="url" id="fieldCover_url" class="form-control" data-validate="cover_url"
+                     placeholder="https://… (leave blank for default)" />
+              <div class="form-error" data-error="cover_url"></div>
+              <div class="form-hint">Paste a direct image URL for the book cover</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group full">
+          <label class="form-label" for="fieldDescription">Description / Summary</label>
+          <textarea id="fieldDescription" class="form-control" data-validate="description"
+                    placeholder="Short book summary or description…" rows="3" maxlength="2000"></textarea>
+          <div class="form-error" data-error="description"></div>
+        </div>
+
+      </div><!-- /form-grid -->
+    </form>
+
+    <div class="modal-footer">
+      <button class="btn btn-ghost" data-close-modal="bookModal">Cancel</button>
+      <button class="btn btn-primary" id="btnSaveBook" form="bookForm" type="submit">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+          <polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+        </svg>
+        Add Book
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     DELETE CONFIRM MODAL
+════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="deleteTitleHeading">
+  <div class="modal confirm-modal">
+    <div class="modal-body" style="padding-top:24px">
+      <div class="confirm-icon" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+          <path d="M10 11v6"/><path d="M14 11v6"/>
+          <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+        </svg>
+      </div>
+      <h2 class="confirm-title" id="deleteTitleHeading">Delete Book?</h2>
+      <p class="confirm-msg">
+        You are about to permanently delete<br>
+        <span class="confirm-book" id="deleteBookTitle"></span><br>
+        This action cannot be undone.
+      </p>
+    </div>
+    <div class="modal-footer" style="justify-content:center;padding-bottom:24px">
+      <button class="btn btn-ghost" data-close-modal="deleteModal">Cancel</button>
+      <button class="btn btn-danger" id="btnConfirmDelete">Yes, Delete</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     BOOK DETAIL VIEW PANEL
+════════════════════════════════════════════════════════ -->
+<div class="view-panel-overlay" id="viewPanelOverlay" aria-hidden="true"></div>
+<aside class="view-panel" id="viewPanel" role="complementary" aria-label="Book details">
+  <div class="view-panel-header">
+    <h2 class="view-panel-title">Book Details</h2>
+    <button class="modal-close" id="btnClosePanel" aria-label="Close details panel">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="view-book-cover" id="viewCover" aria-hidden="true">📚</div>
+
+  <div class="detail-row">
+    <div class="detail-label">Title</div>
+    <div class="detail-value" id="viewTitle">—</div>
+  </div>
+  <div class="detail-grid">
+    <div class="detail-row">
+      <div class="detail-label">Author</div>
+      <div class="detail-value" id="viewAuthor">—</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Year</div>
+      <div class="detail-value" id="viewYear">—</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Publisher</div>
+      <div class="detail-value" id="viewPublisher">—</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Genre</div>
+      <div class="detail-value" id="viewGenre">—</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">ISBN</div>
+      <div class="detail-value" id="viewIsbn" style="font-family:monospace;font-size:0.82rem">—</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Copies</div>
+      <div class="detail-value" id="viewCopies">—</div>
+    </div>
+  </div>
+  <div class="detail-row">
+    <div class="detail-label">Description</div>
+    <div class="detail-value" id="viewDesc" style="font-size:0.85rem;color:var(--clr-text-muted);line-height:1.6">—</div>
+  </div>
+  <div class="detail-row">
+    <div class="detail-label">Added On</div>
+    <div class="detail-value" id="viewAdded" style="font-size:0.82rem;color:var(--clr-text-muted)">—</div>
+  </div>
+</aside>
+
+
+<!-- ═══════════════════════════════════════════════════
+     TOAST CONTAINER
+════════════════════════════════════════════════════════ -->
+<div class="toast-container" id="toastContainer" aria-live="polite" role="status"></div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     SCRIPTS (order matters)
+════════════════════════════════════════════════════════ -->
+<script src="js/ui.js"></script>
+<script src="js/validate.js"></script>
+<script src="js/books.js"></script>
+
+<script>
+  // Update nav badge from stat
+  document.addEventListener('DOMContentLoaded', () => {
+    const observer = new MutationObserver(() => {
+      const total = document.getElementById('statTotalBooks').textContent;
+      document.getElementById('navBooksBadge').textContent = total;
+    });
+    observer.observe(document.getElementById('statTotalBooks'), { childList: true });
+
+    // Update genre stat (unique count)
+    setTimeout(() => {
+      document.getElementById('statGenres').textContent = '8+';
+    }, 800);
+
+    // Save button text mirrors modal title
+    const bookModal = document.getElementById('bookModal');
+    const saveBtn   = document.getElementById('btnSaveBook');
+    const modalTitle = document.getElementById('modalTitle');
+    const observer2 = new MutationObserver(() => {
+      saveBtn.childNodes[saveBtn.childNodes.length - 1].textContent =
+        modalTitle.textContent.includes('Edit') ? ' Save Changes' : ' Add Book';
+    });
+    observer2.observe(modalTitle, { childList: true, characterData: true, subtree: true });
+  });
+</script>
+
+</body>
+</html>

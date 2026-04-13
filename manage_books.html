@@ -1,0 +1,94 @@
+<!-- manage_books.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Books | BookNest</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo">📚 BookNest</div>
+
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="login.html">Logout</a>
+        </nav>
+    </header>
+
+    <!-- Manage Books Section -->
+    <section class="manage-books-section">
+        <div class="manage-books-container">
+
+            <h1>Manage Library Materials</h1>
+            <p>View, edit, and delete books, notes, and other resources.</p>
+
+            <!-- Search Bar -->
+            <div class="manage-search">
+                <input type="text" placeholder="Search materials...">
+                <button class="btn primary-btn">Search</button>
+            </div>
+
+            <!-- Table -->
+            <table class="books-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Material Name</th>
+                        <th>Author</th>
+                        <th>ISBN</th>
+                        <th>Type</th>
+                        <th>Quantity</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <!-- Sample Row -->
+                    <tr>
+                        <td>101</td>
+                        <td>Data Structures</td>
+                        <td>Mark Weiss</td>
+                        <td>9780132847377</td>
+                        <td>Book</td>
+                        <td>12</td>
+                        <td>
+                            <button class="edit-btn">Edit</button>
+                            <button class="delete-btn">Delete</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>102</td>
+                        <td>DBMS Notes</td>
+                        <td>CS Dept</td>
+                        <td>-</td>
+                        <td>Notes</td>
+                        <td>30</td>
+                        <td>
+                            <button class="edit-btn">Edit</button>
+                            <button class="delete-btn">Delete</button>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2026 BookNest | College Library Management System</p>
+    </footer>
+
+</body>
+
+</html>

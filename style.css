@@ -1,0 +1,677 @@
+/* =========================================
+   BOOKNEST — SOFT ELEGANT THEME
+   Warm Cream · Blush · Brown · Terracotta
+   Redesigned for consistency & aesthetics
+========================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+/* RESET */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* BASE */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #faf6f1;
+  color: #4a3728;
+  line-height: 1.65;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================================
+   NAVBAR
+========================================= */
+.navbar {
+  background: #f2e8db;
+  padding: 16px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e0cebb;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 600;
+  color: #5a3825;
+  letter-spacing: 0.3px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 10px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #5a3825;
+  background: #fffaf5;
+  padding: 9px 20px;
+  border-radius: 30px;
+  border: 1px solid #e0cebb;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.25s, color 0.25s, transform 0.2s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  background: #a0724f;
+  color: #fff;
+  border-color: #a0724f;
+  transform: translateY(-1px);
+}
+
+/* Hamburger */
+.menu-toggle {
+  display: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #5a3825;
+}
+
+/* =========================================
+   HERO / INDEX PAGE
+========================================= */
+.container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.card {
+  background: #fffaf5;
+  border: 1px solid #e5d5c2;
+  border-radius: 24px;
+  padding: 50px 44px;
+  max-width: 540px;
+  width: 100%;
+  text-align: center;
+}
+
+.card h1 {
+  font-size: 34px;
+  color: #4a3728;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 16px;
+  color: #7a6155;
+  margin-bottom: 24px;
+}
+
+blockquote {
+  font-style: italic;
+  color: #9e7d6a;
+  border-left: 3px solid #d4a98a;
+  padding-left: 16px;
+  margin: 0 0 28px;
+  text-align: left;
+  font-size: 15px;
+}
+
+.btn-group {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Features Section */
+.features {
+  background: #f2e8db;
+  padding: 48px 40px;
+  text-align: center;
+}
+
+.features h2 {
+  font-size: 24px;
+  color: #4a3728;
+  margin-bottom: 24px;
+}
+
+.feature-boxes {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.feature {
+  background: #fffaf5;
+  border: 1px solid #e0cebb;
+  border-radius: 16px;
+  padding: 20px 28px;
+  font-size: 15px;
+  color: #5a3825;
+  font-weight: 500;
+  flex: 1;
+  min-width: 180px;
+  max-width: 240px;
+}
+
+/* =========================================
+   GENERAL PAGE CONTAINERS
+========================================= */
+.login-container,
+.register-container,
+.add-books-container,
+.manage-books-container,
+.issue-return-container,
+.search-container,
+.account-container {
+  max-width: 820px;
+  margin: 48px auto;
+  background: #fffaf5;
+  padding: 40px 44px;
+  border-radius: 24px;
+  border: 1px solid #e5d5c2;
+}
+
+section {
+  flex: 1;
+  padding: 0 20px;
+}
+
+/* =========================================
+   TYPOGRAPHY
+========================================= */
+h1 {
+  font-size: 30px;
+  font-weight: 600;
+  color: #4a3728;
+  margin-bottom: 8px;
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #5a3825;
+  margin-bottom: 16px;
+}
+
+h3 {
+  font-size: 17px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+p {
+  color: #7a6155;
+  margin-bottom: 16px;
+  font-size: 15px;
+}
+
+/* =========================================
+   FORMS
+========================================= */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: 12px;
+  border: 1px solid #d8c3a5;
+  background: #fffdf9;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  color: #4a3728;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #a0724f;
+  box-shadow: 0 0 0 3px rgba(160, 114, 79, 0.12);
+  outline: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #b09a88;
+}
+
+label {
+  font-size: 14px;
+  color: #7a6155;
+  font-weight: 500;
+  margin-bottom: -8px;
+}
+
+/* =========================================
+   BUTTONS
+========================================= */
+button,
+.btn {
+  background: #a0724f;
+  color: #fff;
+  border: none;
+  padding: 12px 26px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  transition: background 0.25s, transform 0.2s;
+  display: inline-block;
+  text-align: center;
+}
+
+button:hover,
+.btn:hover {
+  background: #7d5538;
+  transform: translateY(-1px);
+}
+
+.secondary-btn {
+  background: #fffaf5;
+  color: #a0724f;
+  border: 1.5px solid #a0724f;
+}
+
+.secondary-btn:hover {
+  background: #f2e8db;
+  color: #7d5538;
+  border-color: #7d5538;
+}
+
+.register-link,
+.login-link {
+  font-size: 13px;
+  color: #9e7d6a;
+  text-align: center;
+  margin-top: 4px;
+}
+
+.register-link a,
+.login-link a {
+  color: #a0724f;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.register-link a:hover,
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+/* =========================================
+   DASHBOARD LAYOUT
+========================================= */
+.dashboard {
+  display: flex;
+  flex: 1;
+  min-height: calc(100vh - 70px - 56px);
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 220px;
+  min-width: 220px;
+  background: #f2e8db;
+  border-right: 1px solid #e0cebb;
+  padding: 32px 20px;
+}
+
+.sidebar h2 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #9e7d6a;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar ul li a {
+  display: block;
+  padding: 10px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #5a3825;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
+}
+
+.sidebar ul li a:hover {
+  background: #e8d5c2;
+  color: #4a3728;
+}
+
+/* MAIN CONTENT */
+.dashboard-main {
+  flex: 1;
+  padding: 36px 40px;
+  overflow-y: auto;
+}
+
+.dashboard-main h1 {
+  margin-bottom: 6px;
+}
+
+/* Stat Cards */
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin: 28px 0;
+}
+
+.dash-card {
+  background: #fffaf5;
+  border: 1px solid #e5d5c2;
+  border-radius: 16px;
+  padding: 22px 20px;
+  text-align: center;
+}
+
+.dash-card h3 {
+  font-size: 13px;
+  color: #9e7d6a;
+  font-weight: 500;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dash-card p {
+  font-size: 28px;
+  font-weight: 600;
+  color: #5a3825;
+  margin: 0;
+}
+
+/* Quick Actions */
+.quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.quick-actions button {
+  font-size: 13px;
+  padding: 10px 20px;
+}
+
+/* Recent Activity */
+.recent-activity {
+  background: #f9f3ec;
+  border: 1px solid #e5d5c2;
+  border-radius: 16px;
+  padding: 24px 28px;
+}
+
+.recent-activity h2 {
+  margin-bottom: 14px;
+}
+
+.recent-activity ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.recent-activity ul li {
+  font-size: 14px;
+  color: #6b5548;
+  padding: 10px 14px;
+  background: #fffaf5;
+  border-radius: 10px;
+  border: 1px solid #ecdbc8;
+}
+
+/* =========================================
+   TABLES (Manage Books / Account)
+========================================= */
+.manage-search {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.manage-search input {
+  flex: 1;
+}
+
+.manage-search button {
+  white-space: nowrap;
+}
+
+.books-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.books-table thead tr {
+  background: #f2e8db;
+}
+
+.books-table th {
+  padding: 12px 14px;
+  text-align: left;
+  font-weight: 600;
+  color: #5a3825;
+  border-bottom: 2px solid #e0cebb;
+}
+
+.books-table td {
+  padding: 12px 14px;
+  color: #6b5548;
+  border-bottom: 1px solid #f0e4d4;
+}
+
+.books-table tbody tr:hover {
+  background: #fdf6ef;
+}
+
+.edit-btn {
+  background: #e8f0fa;
+  color: #3a5fa0;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  margin-right: 6px;
+  transition: background 0.2s;
+}
+
+.edit-btn:hover {
+  background: #c8d8f0;
+  transform: none;
+}
+
+.delete-btn {
+  background: #faeaea;
+  color: #a03030;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.delete-btn:hover {
+  background: #f0caca;
+  transform: none;
+}
+
+/* =========================================
+   ACCOUNT PAGE
+========================================= */
+.profile-card {
+  background: #f9f3ec;
+  border: 1px solid #e5d5c2;
+  border-radius: 16px;
+  padding: 24px 28px;
+  margin-bottom: 28px;
+}
+
+.profile-card h2 {
+  margin-bottom: 14px;
+}
+
+.profile-card p {
+  font-size: 14px;
+  color: #6b5548;
+  margin-bottom: 8px;
+}
+
+.borrowed-books {
+  margin-bottom: 28px;
+}
+
+.account-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* =========================================
+   ISSUE / RETURN
+========================================= */
+.fine-info {
+  background: #fdf6ef;
+  border: 1px solid #e5d5c2;
+  border-radius: 12px;
+  padding: 16px 20px;
+}
+
+.fine-info p {
+  font-size: 14px;
+  color: #7a6155;
+  margin-bottom: 4px;
+}
+
+.fine-info p:last-child {
+  margin-bottom: 0;
+}
+
+/* =========================================
+   FOOTER
+========================================= */
+.footer,
+footer {
+  background: #f2e8db;
+  border-top: 1px solid #e0cebb;
+  text-align: center;
+  padding: 18px 20px;
+  font-size: 13px;
+  color: #9e7d6a;
+}
+
+/* =========================================
+   MOBILE RESPONSIVE
+========================================= */
+@media (max-width: 700px) {
+  .navbar {
+    padding: 14px 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+
+  .nav-links a {
+    width: 100%;
+    text-align: center;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .login-container,
+  .register-container,
+  .add-books-container,
+  .manage-books-container,
+  .issue-return-container,
+  .search-container,
+  .account-container {
+    margin: 24px 0;
+    padding: 28px 20px;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+
+  .dashboard {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    min-width: unset;
+    border-right: none;
+    border-bottom: 1px solid #e0cebb;
+    padding: 20px;
+  }
+
+  .sidebar ul {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .dashboard-main {
+    padding: 24px 20px;
+  }
+
+  .dashboard-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .card {
+    padding: 32px 24px;
+  }
+
+  .feature-boxes {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .books-table {
+    font-size: 12px;
+    display: block;
+    overflow-x: auto;
+  }
+}

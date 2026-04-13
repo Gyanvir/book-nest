@@ -1,0 +1,82 @@
+<!-- issue_return.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issue / Return Books | BookNest</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo">📚 BookNest</div>
+
+        <nav class="nav-links" id="navLinks">
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="login.html">Logout</a>
+        </nav>
+
+        <div class="menu-toggle" id="menuToggle">☰</div>
+    </header>
+
+    <!-- Issue Return Section -->
+    <section class="issue-return-section">
+        <div class="issue-return-container">
+
+            <h1>Issue / Return Library Material</h1>
+            <p>Manage borrowing and returning of books and study materials.</p>
+
+            <form action="#" method="POST" class="issue-return-form">
+
+                <!-- Student Info -->
+                <input type="text" name="student_name" placeholder="Student Name" required>
+
+                <input type="text" name="student_id" placeholder="Student ID" required>
+
+                <!-- Book Info -->
+                <input type="text" name="book_name" placeholder="Book / Material Name" required>
+
+                <input type="text" name="book_id" placeholder="Book ID or ISBN Number" required>
+
+                <!-- Dates -->
+                <label>Issue Date:</label>
+                <input type="date" name="issue_date" required>
+
+                <label>Return Date:</label>
+                <input type="date" name="return_date" required>
+
+                <!-- Borrow Type -->
+                <select name="transaction_type" required>
+                    <option value="">Select Action</option>
+                    <option value="issue">Issue Book</option>
+                    <option value="return">Return Book</option>
+                </select>
+
+                <!-- Info Box -->
+                <div class="fine-info">
+                    <p>📅 Maximum Borrowing Time: <strong>15 Days</strong></p>
+                    <p>💰 Late Fine: <strong>₹5 per extra day</strong></p>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn primary-btn">Submit Record</button>
+
+            </form>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2026 BookNest | College Library Management System</p>
+    </footer>
+
+</body>
+
+</html>

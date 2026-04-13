@@ -1,0 +1,98 @@
+<!-- account.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Account | BookNest</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo">📚 BookNest</div>
+
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="login.html">Logout</a>
+        </nav>
+    </header>
+
+    <!-- Account Section -->
+    <section class="account-section">
+        <div class="account-container">
+
+            <h1>My Account</h1>
+            <p>Manage your personal library profile and borrowed materials.</p>
+
+            <!-- Profile Card -->
+            <div class="profile-card">
+                <h2>👤 User Profile</h2>
+                <p><strong>Name:</strong> Shradha Tiwari</p>
+                <p><strong>User ID:</strong> BN1023</p>
+                <p><strong>Email:</strong> shradha@example.com</p>
+                <p><strong>Role:</strong> Student / Admin</p>
+            </div>
+
+            <!-- Borrowed Materials -->
+            <div class="borrowed-books">
+                <h2>📚 Borrowed Materials</h2>
+
+                <table class="books-table">
+                    <thead>
+                        <tr>
+                            <th>Book ID</th>
+                            <th>Material Name</th>
+                            <th>Issue Date</th>
+                            <th>Return Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>BK101</td>
+                            <td>Operating Systems</td>
+                            <td>2026-04-01</td>
+                            <td>2026-04-15</td>
+                            <td>Issued</td>
+                        </tr>
+
+                        <tr>
+                            <td>BK205</td>
+                            <td>DBMS Notes</td>
+                            <td>2026-04-03</td>
+                            <td>2026-04-18</td>
+                            <td>Issued</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Account Actions -->
+            <div class="account-actions">
+                <button onclick="location.href='dashboard.html'" class="btn primary-btn">
+                    Back to Dashboard
+                </button>
+
+                <button onclick="location.href='login.html'" class="btn secondary-btn">
+                    Logout
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2026 BookNest | College Library Management System</p>
+    </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,72 @@
+<!-- add_books.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Materials | BookNest</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo">📚 BookNest</div>
+
+        <nav class="nav-links" id="navLinks">
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="login.html">Logout</a>
+        </nav>
+
+        <div class="menu-toggle" id="menuToggle">☰</div>
+    </header>
+
+    <!-- Add Books / Materials Section -->
+    <section class="add-books-section">
+        <div class="add-books-container">
+
+            <h1>Add Library Material</h1>
+            <p>Add books, notes, journals, previous year papers and study resources.</p>
+
+            <form action="#" method="POST" class="add-books-form">
+
+                <input type="text" name="material_name" placeholder="Material Name / Book Title" required>
+
+                <input type="text" name="author_name" placeholder="Author / Publisher Name" required>
+
+                <input type="text" name="isbn" placeholder="ISBN Number (if applicable)">
+
+                <input type="text" name="material_id" placeholder="Material ID" required>
+
+                <select name="material_type" required>
+                    <option value="">Select Material Type</option>
+                    <option value="book">Book</option>
+                    <option value="notes">Notes</option>
+                    <option value="journal">Journal</option>
+                    <option value="question_paper">Previous Year Question Paper</option>
+                    <option value="magazine">Magazine</option>
+                </select>
+
+                <input type="number" name="quantity" placeholder="Quantity Available" required>
+
+                <textarea name="description" rows="4" placeholder="Description / Additional Details"></textarea>
+
+                <button type="submit" class="btn primary-btn">Add Material</button>
+
+            </form>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2026 BookNest | College Library Management System</p>
+    </footer>
+
+</body>
+
+</html>

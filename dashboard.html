@@ -1,0 +1,103 @@
+<!-- Fully Updated dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | BookNest</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
+</head>
+
+<body>
+
+    <!-- Top Navbar -->
+    <header class="navbar">
+        <div class="logo">📚 BookNest</div>
+
+        <nav class="nav-links" id="navLinks">
+            <a href="index.html">Home</a>
+            <a href="dashboard.html" class="active">Dashboard</a>
+            <a href="login.html">Logout</a>
+        </nav>
+
+        <div class="menu-toggle" id="menuToggle">☰</div>
+    </header>
+
+    <!-- Dashboard Layout -->
+    <section class="dashboard">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2>Library Menu</h2>
+            <ul>
+                <li><a href="dashboard.html" style="text-decoration: none;color: brown;font-size: larger;"> Dashboard Home</a></li>
+                <li><a href="manage_books.html" style="text-decoration: none;color: brown;font-size: larger;"> Manage Books</a></li>
+                <li><a href="add_books.html" style="text-decoration: none;color: brown;font-size: larger;"> Add Books</a></li>
+                <li><a href="issue_return.html" style="text-decoration: none;color: brown;font-size: larger;"> Issue / Return</a></li>
+                <li><a href="search_books.html" style="text-decoration: none;color: brown;font-size: larger;"> Search Materials</a></li>
+                <li><a href="account.html" style="text-decoration: none;color: brown;font-size: larger;">User Account</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <h1>Welcome to Your Dashboard</h1>
+            <p>Manage all library resources in one place.</p>
+
+            <!-- Stats Cards -->
+            <div class="dashboard-cards">
+
+                <div class="dash-card">
+                    <h3>Total Books</h3>
+                    <p>1,250</p>
+                </div>
+
+                <div class="dash-card">
+                    <h3>Issued Books</h3>
+                    <p>320</p>
+                </div>
+
+                <div class="dash-card">
+                    <h3>Available Materials</h3>
+                    <p>930</p>
+                </div>
+
+                <div class="dash-card">
+                    <h3>Notes & Papers</h3>
+                    <p>450</p>
+                </div>
+
+            </div>
+
+            <!-- Quick Action Buttons -->
+            <div class="quick-actions">
+                <button onclick="location.href='add_books.html'">Add New Material</button>
+                <button onclick="location.href='manage_books.html'">Manage Books</button>
+                <button onclick="location.href='search_books.html'">Search Materials</button>
+                <button onclick="location.href='issue_return.html'">Issue / Return</button>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="recent-activity">
+                <h2>Recent Activity</h2>
+                <ul>
+                    <li>📖 "Data Structures" issued to Student ID 1023</li>
+                    <li>📝 New Computer Networks notes uploaded</li>
+                    <li>📚 "DBMS Concepts" added to library</li>
+                    <li>🔄 "Operating Systems" returned today</li>
+                </ul>
+            </div>
+        </main>
+
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2026 BookNest | College Library Management System</p>
+    </footer>
+
+</body>
+
+</html>

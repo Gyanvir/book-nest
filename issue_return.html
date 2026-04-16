@@ -8,6 +8,10 @@
     <title>Issue / Return Books | BookNest</title>
     <link rel="stylesheet" href="style.css">
     <script defer src="script.js"></script>
+
+    <!-- ✅ Module 2: Session Guard (protects this page + handles logout) -->
+    <script src="module2/auth.js"></script>
+    <script src="module2/session-guard.js"></script>
 </head>
 
 <body>
@@ -19,7 +23,8 @@
         <nav class="nav-links" id="navLinks">
             <a href="index.html">Home</a>
             <a href="dashboard.html">Dashboard</a>
-            <a href="login.html">Logout</a>
+            <!-- ✅ logout-btn handles proper session cleanup -->
+            <a href="login.html" class="logout-btn">Logout</a>
         </nav>
 
         <div class="menu-toggle" id="menuToggle">☰</div>

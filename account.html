@@ -5,13 +5,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Your BookNest account — profile and borrowed materials.">
     <title>User Account | BookNest</title>
     <link rel="stylesheet" href="style.css">
     <script defer src="script.js"></script>
 
     <!-- ✅ Module 2: Session Guard (protects this page + handles logout) -->
-    <script src="module2/auth.js"></script>
-    <script src="module2/session-guard.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/session-guard.js"></script>
 </head>
 
 <body>
@@ -20,12 +21,13 @@
     <header class="navbar">
         <div class="logo">📚 BookNest</div>
 
-        <nav class="nav-links">
+        <nav class="nav-links" id="navLinks">
             <a href="index.html">Home</a>
             <a href="dashboard.html">Dashboard</a>
             <!-- ✅ class="logout-btn" makes session-guard.js handle logout properly -->
             <a href="login.html" class="logout-btn">Logout</a>
         </nav>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
     </header>
 
     <!-- Account Section -->

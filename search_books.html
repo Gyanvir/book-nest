@@ -1,13 +1,18 @@
-<!-- search_books.html -->
+<!-- search_books.html — Search Library Materials -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Search books, notes, papers, and journals in the BookNest library.">
     <title>Search Materials | BookNest</title>
     <link rel="stylesheet" href="style.css">
     <script defer src="script.js"></script>
+
+    <!-- Module 2: Session Guard -->
+    <script src="js/auth.js"></script>
+    <script src="js/session-guard.js"></script>
 </head>
 
 <body>
@@ -19,14 +24,14 @@
         <nav class="nav-links" id="navLinks">
             <a href="index.html">Home</a>
             <a href="dashboard.html">Dashboard</a>
-            <a href="login.html">Logout</a>
+            <a href="login.html" class="logout-btn">Logout</a>
         </nav>
 
-        <div class="menu-toggle" id="menuToggle">☰</div>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
     </header>
 
     <!-- Search Section -->
-    <section class="search-section">
+    <section>
         <div class="search-container">
 
             <h1>Search Library Materials</h1>
@@ -39,7 +44,7 @@
                 <input type="text" name="search_query" placeholder="Search by title, author, ISBN, keyword..." required>
 
                 <!-- Category Dropdown -->
-                <select name="material_type" required>
+                <select name="material_type">
                     <option value="">Select Material Type</option>
                     <option value="all">All Materials</option>
                     <option value="books">Books</option>
@@ -50,11 +55,14 @@
                 </select>
 
                 <!-- Search Button -->
-                <button type="submit" class="btn primary-btn">Search</button>
+                <button type="submit" class="btn primary-btn">🔍 Search</button>
 
             </form>
 
-           
+            <!-- Search Results Placeholder -->
+            <div id="searchResults" style="margin-top: 24px;"></div>
+
+        </div>
     </section>
 
     <!-- Footer -->

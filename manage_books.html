@@ -1,13 +1,18 @@
-<!-- manage_books.html -->
+<!-- manage_books.html — Admin: Manage Library Materials -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage library books and materials — BookNest Admin.">
     <title>Manage Books | BookNest</title>
     <link rel="stylesheet" href="style.css">
     <script defer src="script.js"></script>
+
+    <!-- Module 2: Session Guard (admin-only) -->
+    <script src="js/auth.js"></script>
+    <script src="js/session-guard.js"></script>
 </head>
 
 <body>
@@ -16,28 +21,30 @@
     <header class="navbar">
         <div class="logo">📚 BookNest</div>
 
-        <nav class="nav-links">
+        <nav class="nav-links" id="navLinks">
             <a href="index.html">Home</a>
             <a href="dashboard.html">Dashboard</a>
-            <a href="login.html">Logout</a>
+            <a href="login.html" class="logout-btn">Logout</a>
         </nav>
+
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
     </header>
 
     <!-- Manage Books Section -->
-    <section class="manage-books-section">
+    <section>
         <div class="manage-books-container">
 
             <h1>Manage Library Materials</h1>
-            <p>View, edit, and delete books, notes, and other resources.</p>
+            <p>View, edit, and delete books, notes, and other resources. For full book management, use the <a href="admin/" style="color:var(--bn-primary);font-weight:500;">Admin Dashboard</a>.</p>
 
             <!-- Search Bar -->
             <div class="manage-search">
-                <input type="text" placeholder="Search materials...">
-                <button class="btn primary-btn">Search</button>
+                <input type="text" id="searchInput" placeholder="Search materials...">
+                <button class="btn primary-btn" onclick="filterTable()">Search</button>
             </div>
 
             <!-- Table -->
-            <table class="books-table">
+            <table class="books-table" id="booksTable">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -51,7 +58,6 @@
                 </thead>
 
                 <tbody>
-                    <!-- Sample Row -->
                     <tr>
                         <td>101</td>
                         <td>Data Structures</td>
@@ -69,7 +75,7 @@
                         <td>102</td>
                         <td>DBMS Notes</td>
                         <td>CS Dept</td>
-                        <td>-</td>
+                        <td>—</td>
                         <td>Notes</td>
                         <td>30</td>
                         <td>
@@ -78,6 +84,18 @@
                         </td>
                     </tr>
 
+                    <tr>
+                        <td>103</td>
+                        <td>Operating Systems Concepts</td>
+                        <td>Silberschatz</td>
+                        <td>9781118802403</td>
+                        <td>Book</td>
+                        <td>8</td>
+                        <td>
+                            <button class="edit-btn">Edit</button>
+                            <button class="delete-btn">Delete</button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
 
@@ -88,6 +106,18 @@
     <footer class="footer">
         <p>© 2026 BookNest | College Library Management System</p>
     </footer>
+
+    <script>
+        function filterTable() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#booksTable tbody tr');
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(q) ? '' : 'none';
+            });
+        }
+        document.getElementById('searchInput').addEventListener('keyup', filterTable);
+    </script>
 
 </body>
 

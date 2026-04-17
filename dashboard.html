@@ -1,33 +1,33 @@
-<!-- Fully Updated dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BookNest Dashboard — Manage library resources, books, issue and return.">
     <title>Dashboard | BookNest</title>
     <link rel="stylesheet" href="style.css">
     <script defer src="script.js"></script>
 
-    <!-- ✅ Module 2: Session Guard (protects this page + handles logout) -->
-    <script src="module2/auth.js"></script>
-    <script src="module2/session-guard.js"></script>
+    <!-- Module 2: Session Guard -->
+    <script src="js/auth.js"></script>
+    <script src="js/session-guard.js"></script>
 </head>
 
 <body>
 
-    <!-- Top Navbar -->
+    <!-- Navbar -->
     <header class="navbar">
         <div class="logo">📚 BookNest</div>
 
         <nav class="nav-links" id="navLinks">
             <a href="index.html">Home</a>
             <a href="dashboard.html" class="active">Dashboard</a>
-            <!-- ✅ logout-btn handles proper session cleanup -->
+            <a href="account.html">My Account</a>
             <a href="login.html" class="logout-btn">Logout</a>
         </nav>
 
-        <div class="menu-toggle" id="menuToggle">☰</div>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
     </header>
 
     <!-- Dashboard Layout -->
@@ -37,19 +37,19 @@
         <aside class="sidebar">
             <h2>Library Menu</h2>
             <ul>
-                <li><a href="dashboard.html" style="text-decoration: none;color: brown;font-size: larger;"> Dashboard Home</a></li>
-                <li><a href="manage_books.html" style="text-decoration: none;color: brown;font-size: larger;"> Manage Books</a></li>
-                <li><a href="add_books.html" style="text-decoration: none;color: brown;font-size: larger;"> Add Books</a></li>
-                <li><a href="issue_return.html" style="text-decoration: none;color: brown;font-size: larger;"> Issue / Return</a></li>
-                <li><a href="search_books.html" style="text-decoration: none;color: brown;font-size: larger;"> Search Materials</a></li>
-                <li><a href="account.html" style="text-decoration: none;color: brown;font-size: larger;">User Account</a></li>
+                <li><a href="dashboard.html" class="active">🏠 Dashboard Home</a></li>
+                <!-- Admin only -->
+                <li class="admin-only"><a href="admin/">📖 Manage Books</a></li>
+                <li class="admin-only"><a href="issue_return.html">🔄 Issue / Return</a></li>
+                <!-- All users -->
+                <li><a href="search_books.html">🔍 Search Materials</a></li>
+                <li><a href="account.html">👤 User Account</a></li>
             </ul>
         </aside>
 
         <!-- Main Content -->
         <main class="dashboard-main">
-            <!-- ✅ Shows logged-in user's name dynamically -->
-            <h1>Welcome, <span data-auth="fullname"></span>!</h1>
+            <h1>Welcome, <span data-auth="fullname">Admin</span>!</h1>
             <p>Manage all library resources in one place.</p>
 
             <!-- Stats Cards -->
@@ -66,23 +66,23 @@
                 </div>
 
                 <div class="dash-card">
-                    <h3>Available Materials</h3>
+                    <h3>Available</h3>
                     <p>930</p>
                 </div>
 
                 <div class="dash-card">
-                    <h3>Notes & Papers</h3>
-                    <p>450</p>
+                    <h3>Registered Users</h3>
+                    <p>145</p>
                 </div>
 
             </div>
 
             <!-- Quick Action Buttons -->
             <div class="quick-actions">
-                <button onclick="location.href='add_books.html'">Add New Material</button>
-                <button onclick="location.href='manage_books.html'">Manage Books</button>
-                <button onclick="location.href='search_books.html'">Search Materials</button>
-                <button onclick="location.href='issue_return.html'">Issue / Return</button>
+                <button class="admin-only" onclick="location.href='admin/'">📖 Manage Books</button>
+                <button class="admin-only secondary-btn" onclick="location.href='issue_return.html'">🔄 Issue / Return</button>
+                <button onclick="location.href='search_books.html'" class="secondary-btn">🔍 Search Materials</button>
+                <button onclick="location.href='account.html'" class="secondary-btn">👤 My Account</button>
             </div>
 
             <!-- Recent Activity -->
@@ -90,9 +90,9 @@
                 <h2>Recent Activity</h2>
                 <ul>
                     <li>📖 "Data Structures" issued to Student ID 1023</li>
-                    <li>📝 New Computer Networks notes uploaded</li>
                     <li>📚 "DBMS Concepts" added to library</li>
                     <li>🔄 "Operating Systems" returned today</li>
+                    <li>👤 New user registered: Priya Sharma</li>
                 </ul>
             </div>
         </main>
@@ -104,6 +104,17 @@
         <p>© 2026 BookNest | College Library Management System</p>
     </footer>
 
-</body>
+    <script>
+        // Hide admin-only elements for non-admin users
+        document.addEventListener('DOMContentLoaded', () => {
+            const session = Auth.getSession();
+            if (!session || session.role !== 'admin') {
+                document.querySelectorAll('.admin-only').forEach(el => {
+                    el.style.display = 'none';
+                });
+            }
+        });
+    </script>
 
+</body>
 </html>

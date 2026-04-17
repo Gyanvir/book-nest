@@ -4,7 +4,7 @@
 //  Depends on: ui.js, validate.js
 // ============================================================
 
-const API_BASE = 'api/books.php';
+const API_BASE = '../api/books.php';
 
 // ── State ────────────────────────────────────────────────────
 const state = {
@@ -75,7 +75,7 @@ function initUI() {
   $('#bookForm').addEventListener('submit', handleFormSubmit);
 
   // Cover URL live preview
-  $('#fieldCoverUrl').addEventListener('input', debounce((e) => {
+  $('#fieldCover_url').addEventListener('input', debounce((e) => {
     updateCoverPreview(e.target.value, 'formCoverPreview');
   }, 400));
 

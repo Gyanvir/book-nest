@@ -1,17 +1,18 @@
-<!-- issue_return.html -->
+<!-- issue_return.html — Admin: Issue & Return Library Materials -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Issue and return library books — BookNest Admin.">
     <title>Issue / Return Books | BookNest</title>
     <link rel="stylesheet" href="style.css">
     <script defer src="script.js"></script>
 
-    <!-- ✅ Module 2: Session Guard (protects this page + handles logout) -->
-    <script src="module2/auth.js"></script>
-    <script src="module2/session-guard.js"></script>
+    <!-- Module 2: Session Guard (admin only) -->
+    <script src="js/auth.js"></script>
+    <script src="js/session-guard.js"></script>
 </head>
 
 <body>
@@ -23,54 +24,59 @@
         <nav class="nav-links" id="navLinks">
             <a href="index.html">Home</a>
             <a href="dashboard.html">Dashboard</a>
-            <!-- ✅ logout-btn handles proper session cleanup -->
             <a href="login.html" class="logout-btn">Logout</a>
         </nav>
 
-        <div class="menu-toggle" id="menuToggle">☰</div>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
     </header>
 
     <!-- Issue Return Section -->
-    <section class="issue-return-section">
+    <section>
         <div class="issue-return-container">
 
             <h1>Issue / Return Library Material</h1>
-            <p>Manage borrowing and returning of books and study materials.</p>
+            <p>Record borrowing and returning of books and study materials. Maximum lending period: <strong>15 days</strong>.</p>
 
-            <form action="#" method="POST" class="issue-return-form">
+            <form action="#" method="POST" class="issue-return-form" id="issueReturnForm">
 
                 <!-- Student Info -->
-                <input type="text" name="student_name" placeholder="Student Name" required>
+                <label>Student Name</label>
+                <input type="text" name="student_name" placeholder="Full Name of Student" required>
 
-                <input type="text" name="student_id" placeholder="Student ID" required>
+                <label>Student ID</label>
+                <input type="text" name="student_id" placeholder="e.g. STU-2023-1045" required>
 
                 <!-- Book Info -->
-                <input type="text" name="book_name" placeholder="Book / Material Name" required>
+                <label>Book / Material Name</label>
+                <input type="text" name="book_name" placeholder="Book or Material Name" required>
 
-                <input type="text" name="book_id" placeholder="Book ID or ISBN Number" required>
+                <label>Book ID or ISBN</label>
+                <input type="text" name="book_id" placeholder="e.g. BK101 or 978-0-06-112008-4" required>
 
                 <!-- Dates -->
-                <label>Issue Date:</label>
-                <input type="date" name="issue_date" required>
+                <label>Issue Date</label>
+                <input type="date" name="issue_date" id="issueDate" required>
 
-                <label>Return Date:</label>
-                <input type="date" name="return_date" required>
+                <label>Return Date</label>
+                <input type="date" name="return_date" id="returnDate" required>
 
-                <!-- Borrow Type -->
+                <!-- Transaction Type -->
+                <label>Action</label>
                 <select name="transaction_type" required>
                     <option value="">Select Action</option>
                     <option value="issue">Issue Book</option>
                     <option value="return">Return Book</option>
                 </select>
 
-                <!-- Info Box -->
+                <!-- Fine Info Box -->
                 <div class="fine-info">
-                    <p>📅 Maximum Borrowing Time: <strong>15 Days</strong></p>
+                    <p>📅 Maximum Borrowing Period: <strong>15 Days</strong></p>
                     <p>💰 Late Fine: <strong>₹5 per extra day</strong></p>
+                    <p id="fineCalcResult"></p>
                 </div>
 
                 <!-- Submit Button -->
-                <button type="submit" class="btn primary-btn">Submit Record</button>
+                <button type="submit" class="btn primary-btn">✅ Submit Record</button>
 
             </form>
 
@@ -81,6 +87,23 @@
     <footer class="footer">
         <p>© 2026 BookNest | College Library Management System</p>
     </footer>
+
+    <script>
+        // Auto-calculate fine when dates change
+        function calcFine() {
+            const issue  = new Date(document.getElementById('issueDate').value);
+            const ret    = new Date(document.getElementById('returnDate').value);
+            const result = document.getElementById('fineCalcResult');
+            if (!issue || !ret || isNaN(issue) || isNaN(ret)) { result.textContent = ''; return; }
+            const days = Math.round((ret - issue) / (1000 * 60 * 60 * 24));
+            if (days <= 0) { result.textContent = '⚠️ Return date must be after issue date.'; return; }
+            const fine = days > 15 ? (days - 15) * 5 : 0;
+            result.innerHTML = `📆 Duration: <strong>${days} day${days !== 1 ? 's' : ''}</strong>${fine > 0 ? ` — 💸 Fine: <strong style="color:var(--bn-danger)">₹${fine}</strong>` : ' — ✅ Within limit'}`;
+        }
+
+        document.getElementById('issueDate').addEventListener('change', calcFine);
+        document.getElementById('returnDate').addEventListener('change', calcFine);
+    </script>
 
 </body>
 

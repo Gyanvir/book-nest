@@ -6,8 +6,8 @@
 
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'booknest');
-define('DB_USER', 'GYAN');       // ← change to your MySQL username
-define('DB_PASS', 'supreme');                // ← blank = XAMPP default, change if you set a password
+define('DB_USER', 'root');        // ← your MySQL username (XAMPP default: root)
+define('DB_PASS', '');            // ← your MySQL password (XAMPP default: blank)
 define('DB_CHARSET', 'utf8mb4');
 
 function getDB(): PDO

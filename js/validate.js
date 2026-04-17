@@ -136,13 +136,40 @@ const Validate = (() => {
         const name = el.dataset.validate;
         const err = validateField(name, el.value);
         showFieldError(form, name, err);
+
+        // Re-run cross-field check whenever total_copies or available changes
+        if (name === 'total_copies' || name === 'available') {
+          runCrossFieldCheck(form);
+        }
       });
       el.addEventListener('blur', () => {
         const name = el.dataset.validate;
         const err = validateField(name, el.value);
         showFieldError(form, name, err);
+
+        if (name === 'total_copies' || name === 'available') {
+          runCrossFieldCheck(form);
+        }
       });
     });
+  }
+
+  /** Cross-field: available must not exceed total_copies */
+  function runCrossFieldCheck(form) {
+    const tc = form.querySelector('[data-validate="total_copies"]');
+    const av = form.querySelector('[data-validate="available"]');
+    if (!tc || !av || av.value === '') {
+      // Clear the error if available is empty
+      showFieldError(form, 'available', null);
+      return;
+    }
+    const tcVal = parseInt(tc.value);
+    const avVal = parseInt(av.value);
+    if (!isNaN(tcVal) && !isNaN(avVal) && avVal > tcVal) {
+      showFieldError(form, 'available', 'Available copies cannot exceed total copies');
+    } else {
+      showFieldError(form, 'available', null); // clear the error
+    }
   }
 
   function showFieldError(form, name, error) {
@@ -178,5 +205,5 @@ const Validate = (() => {
     });
   }
 
-  return { validateField, validateForm, attachLiveValidation, showAllErrors, clearForm };
+  return { validateField, validateForm, attachLiveValidation, showAllErrors, clearForm, runCrossFieldCheck };
 })();

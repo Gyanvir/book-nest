@@ -1,4 +1,3 @@
-<!-- search_books.html — Search Library Materials -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,68 +7,301 @@
     <meta name="description" content="Search books, notes, papers, and journals in the BookNest library.">
     <title>Search Materials | BookNest</title>
     <link rel="stylesheet" href="style.css">
-    <script defer src="script.js"></script>
-
-    <!-- Module 2: Session Guard -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="js/auth.js"></script>
     <script src="js/session-guard.js"></script>
+    <style>
+        .search-page { max-width: 1100px; margin: 0 auto; padding: 40px 24px 64px; }
+
+        .search-hero {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+        .search-hero h1 { font-size: 2rem; font-weight: 700; color: var(--bn-brown-dark); margin-bottom: 8px; }
+        .search-hero p  { color: var(--bn-brown-light); font-size: 0.97rem; }
+
+        /* Big search bar */
+        .search-bar-wrap {
+            display: flex;
+            gap: 0;
+            border: 2px solid var(--bn-brown);
+            border-radius: var(--r-lg);
+            overflow: hidden;
+            background: var(--bn-white);
+            margin-bottom: 20px;
+            box-shadow: 0 4px 16px rgba(101,67,33,0.08);
+        }
+        .search-bar-wrap input {
+            flex: 1;
+            padding: 16px 20px;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            font-family: inherit;
+            background: transparent;
+            color: var(--bn-brown-dark);
+        }
+        .search-bar-wrap button {
+            padding: 0 28px;
+            background: var(--bn-brown);
+            color: #fff;
+            border: none;
+            font-size: 1rem;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .search-bar-wrap button:hover { background: var(--bn-brown-dark); }
+
+        /* Filters row */
+        .filters-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+        .filters-row select {
+            padding: 10px 14px;
+            border: 1.5px solid var(--bn-input-border);
+            border-radius: var(--r-md);
+            font-family: inherit;
+            font-size: 0.9rem;
+            background: var(--bn-white);
+            color: var(--bn-brown-dark);
+            cursor: pointer;
+        }
+        .result-count {
+            font-size: 0.88rem;
+            color: var(--bn-brown-light);
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Book grid */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 22px;
+        }
+        .book-card {
+            background: var(--bn-white);
+            border-radius: var(--r-lg);
+            border: 1px solid var(--bn-border);
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .book-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(101,67,33,0.13); }
+        .book-cover-img { width: 100%; height: 200px; object-fit: cover; display: block; background: var(--bn-cream); }
+        .book-cover-ph  { width: 100%; height: 200px; display: flex; align-items: center; justify-content: center;
+                          font-size: 3.2rem; background: linear-gradient(135deg,#f5ede4,#ede3d8); }
+        .book-card-body { padding: 14px 15px 16px; }
+        .bc-title  { font-size: 0.92rem; font-weight: 600; color: var(--bn-brown-dark); line-height:1.3;
+                     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden; margin-bottom:4px; }
+        .bc-author { font-size: 0.78rem; color: var(--bn-brown-light); margin-bottom: 10px; }
+        .bc-meta   { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; }
+        .badge-genre { font-size:0.7rem; padding:3px 9px; background:var(--bn-cream); color:var(--bn-brown);
+                       border-radius:20px; border:1px solid var(--bn-border); font-weight:500; }
+        .avail-badge       { font-size:0.72rem; font-weight:600; padding:3px 9px; border-radius:20px; }
+        .avail-badge.ok    { background:#edfaf3; color:#1a7f4f; }
+        .avail-badge.low   { background:#fff8e6; color:#b45309; }
+        .avail-badge.none  { background:#fef2f2; color:#b91c1c; }
+
+        /* States */
+        .results-state { grid-column:1/-1; text-align:center; padding:60px 20px; color:var(--bn-brown-light); }
+        .results-state .spinner { width:38px;height:38px;border:3px solid var(--bn-border);border-top-color:var(--bn-brown);
+                                  border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 14px; }
+        @keyframes spin { to { transform:rotate(360deg); } }
+
+        /* Pagination */
+        .pag { display:flex;gap:8px;justify-content:center;margin-top:36px;flex-wrap:wrap; }
+        .pag button { padding:8px 16px;border:1.5px solid var(--bn-border);border-radius:var(--r-sm);
+                      background:var(--bn-white);color:var(--bn-brown);cursor:pointer;font-size:0.87rem;
+                      font-family:inherit;transition:all 0.2s; }
+        .pag button:hover,.pag button.active { background:var(--bn-brown);color:#fff;border-color:var(--bn-brown); }
+        .pag button:disabled { opacity:0.4;cursor:default; }
+    </style>
 </head>
 
 <body>
 
-    <!-- Navbar -->
+    <!-- Navbar (populated by session-guard.js) -->
     <header class="navbar">
         <div class="logo">📚 BookNest</div>
-
         <nav class="nav-links" id="navLinks">
             <a href="index.html">Home</a>
             <a href="dashboard.html">Dashboard</a>
-            <a href="login.html" class="logout-btn">Logout</a>
+            <a href="api/logout.php" class="logout-btn">Logout</a>
         </nav>
-
         <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
     </header>
 
-    <!-- Search Section -->
-    <section>
-        <div class="search-container">
+    <main class="search-page">
 
-            <h1>Search Library Materials</h1>
-            <p>Find books, notes, previous year question papers, journals and more.</p>
-
-            <!-- Search Form -->
-            <form action="#" method="GET" class="search-form">
-
-                <!-- Search Input -->
-                <input type="text" name="search_query" placeholder="Search by title, author, ISBN, keyword..." required>
-
-                <!-- Category Dropdown -->
-                <select name="material_type">
-                    <option value="">Select Material Type</option>
-                    <option value="all">All Materials</option>
-                    <option value="books">Books</option>
-                    <option value="notes">Notes</option>
-                    <option value="pyqs">Previous Year Question Papers</option>
-                    <option value="journals">Journals</option>
-                    <option value="magazines">Magazines</option>
-                </select>
-
-                <!-- Search Button -->
-                <button type="submit" class="btn primary-btn">🔍 Search</button>
-
-            </form>
-
-            <!-- Search Results Placeholder -->
-            <div id="searchResults" style="margin-top: 24px;"></div>
-
+        <!-- Hero -->
+        <div class="search-hero">
+            <h1>🔍 Search Library Materials</h1>
+            <p>Find books by title, author, ISBN, or keyword</p>
         </div>
-    </section>
+
+        <!-- Big search bar -->
+        <div class="search-bar-wrap">
+            <input type="text" id="searchInput" placeholder="Search by title, author, ISBN, keyword…" autocomplete="off">
+            <button onclick="doSearch(1)">Search</button>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters-row">
+            <select id="genreFilter">
+                <option value="">All Genres</option>
+                <option>Fiction</option>
+                <option>Dystopian Fiction</option>
+                <option>Classic Fiction</option>
+                <option>Fantasy</option>
+                <option>Mystery/Thriller</option>
+                <option>Philosophical Fiction</option>
+                <option>Science</option>
+                <option>Non-Fiction</option>
+                <option>History</option>
+                <option>Biography</option>
+                <option>Computer Science</option>
+                <option>Mathematics</option>
+                <option>Engineering</option>
+            </select>
+            <select id="statusFilter">
+                <option value="">All Status</option>
+                <option value="available">Available</option>
+                <option value="unavailable">Fully Issued</option>
+            </select>
+            <div class="result-count" id="resultCount"></div>
+        </div>
+
+        <!-- Results Grid -->
+        <div class="results-grid" id="resultsGrid">
+            <div class="results-state">
+                <div class="spinner"></div>
+                <p>Loading books…</p>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pag" id="pagBar"></div>
+
+    </main>
 
     <!-- Footer -->
     <footer class="footer">
         <p>© 2026 BookNest | College Library Management System</p>
     </footer>
 
-</body>
+    <script>
+    const PER = 12;
+    let timer;
 
+    // Read URL params on load
+    window.addEventListener('DOMContentLoaded', () => {
+        const p = new URLSearchParams(location.search);
+        if (p.get('search_query')) document.getElementById('searchInput').value = p.get('search_query');
+        if (p.get('genre'))        document.getElementById('genreFilter').value  = p.get('genre');
+        doSearch(1);
+    });
+
+    // Live search on input
+    document.getElementById('searchInput').addEventListener('input', () => {
+        clearTimeout(timer);
+        timer = setTimeout(() => doSearch(1), 350);
+    });
+    document.getElementById('genreFilter').addEventListener('change',  () => doSearch(1));
+    document.getElementById('statusFilter').addEventListener('change', () => doSearch(1));
+
+    // Enter key
+    document.getElementById('searchInput').addEventListener('keydown', e => {
+        if (e.key === 'Enter') { clearTimeout(timer); doSearch(1); }
+    });
+
+    async function doSearch(page) {
+        const q      = document.getElementById('searchInput').value.trim();
+        const genre  = document.getElementById('genreFilter').value;
+        const status = document.getElementById('statusFilter').value;
+        const grid   = document.getElementById('resultsGrid');
+        const count  = document.getElementById('resultCount');
+
+        grid.innerHTML = `<div class="results-state"><div class="spinner"></div><p>Searching…</p></div>`;
+        count.textContent = '';
+
+        const params = new URLSearchParams({ action: 'list', page, per: PER });
+        if (q)      params.set('q', q);
+        if (genre)  params.set('genre', genre);
+        if (status) params.set('status', status);
+
+        try {
+            const res  = await fetch('api/books.php?' + params);
+            const data = await res.json();
+            if (!data.success) throw new Error(data.message);
+
+            count.textContent = `${data.meta.total} result${data.meta.total !== 1 ? 's' : ''}`;
+            renderGrid(data.data);
+            renderPag(data.meta, page);
+        } catch (e) {
+            grid.innerHTML = `<div class="results-state"><p>⚠️ ${e.message || 'Failed to load results.'}</p></div>`;
+        }
+    }
+
+    function renderGrid(books) {
+        const grid = document.getElementById('resultsGrid');
+        if (!books || books.length === 0) {
+            grid.innerHTML = `<div class="results-state"><p>📭 No books found. Try a different search.</p></div>`;
+            return;
+        }
+        grid.innerHTML = books.map(b => {
+            const avail = parseInt(b.available);
+            const total = parseInt(b.total_copies);
+            const pct   = total > 0 ? avail / total : 0;
+            const cls   = avail === 0 ? 'none' : pct <= 0.25 ? 'low' : 'ok';
+            const label = avail === 0 ? 'Fully Issued' : `${avail}/${total} Available`;
+
+            const cover = b.cover_url
+                ? `<img class="book-cover-img" src="${esc(b.cover_url)}" alt="Cover" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+                : '';
+            const ph = `<div class="book-cover-ph" ${b.cover_url ? 'style="display:none"' : ''}>📚</div>`;
+
+            return `
+            <div class="book-card">
+                ${cover}${ph}
+                <div class="book-card-body">
+                    <div class="bc-title">${esc(b.title)}</div>
+                    <div class="bc-author">by ${esc(b.author)}</div>
+                    <div class="bc-meta">
+                        ${b.genre ? `<span class="badge-genre">${esc(b.genre)}</span>` : '<span></span>'}
+                        <span class="avail-badge ${cls}">${label}</span>
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    function renderPag(meta, currentPage) {
+        const el = document.getElementById('pagBar');
+        const { total_pages } = meta;
+        if (total_pages <= 1) { el.innerHTML = ''; return; }
+
+        let html = `<button ${currentPage<=1?'disabled':''} onclick="doSearch(${currentPage-1})">← Prev</button>`;
+        for (let i = 1; i <= total_pages; i++) {
+            if (total_pages > 7 && Math.abs(i - currentPage) > 2 && i !== 1 && i !== total_pages) {
+                if (i === 2 || i === total_pages - 1) html += `<button disabled>…</button>`;
+                continue;
+            }
+            html += `<button class="${i===currentPage?'active':''}" onclick="doSearch(${i})">${i}</button>`;
+        }
+        html += `<button ${currentPage>=total_pages?'disabled':''} onclick="doSearch(${currentPage+1})">Next →</button>`;
+        el.innerHTML = html;
+    }
+
+    function esc(s) {
+        return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+    </script>
+
+</body>
 </html>

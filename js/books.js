@@ -311,17 +311,25 @@ function openEditModal(id) {
   $('#modalSubtitle').textContent = 'Update the book details below';
   $('#fieldAvailable').closest('.form-group').style.display = '';
 
-  // Pre-fill fields
-  const map = {
-    isbn: 'isbn', title: 'title', author: 'author',
-    publisher: 'publisher', year: 'year', genre: 'genre',
-    total_copies: 'total_copies', available: 'available',
-    cover_url: 'cover_url', description: 'description',
+  // Pre-fill fields — direct ID map (avoids capitalize() mismatch with underscored IDs)
+  const fieldMap = {
+    isbn:         'fieldIsbn',
+    title:        'fieldTitle',
+    author:       'fieldAuthor',
+    publisher:    'fieldPublisher',
+    year:         'fieldYear',
+    genre:        'fieldGenre',
+    total_copies: 'fieldTotal_copies',
+    available:    'fieldAvailable',
+    cover_url:    'fieldCover_url',
+    description:  'fieldDescription',
   };
-  for (const [field, key] of Object.entries(map)) {
-    const el = $(`#field${capitalize(field)}`);
+  for (const [key, id] of Object.entries(fieldMap)) {
+    const el = $(`#${id}`);
     if (el) el.value = book[key] ?? '';
   }
+  // Validate cross-field immediately so no stale errors show on open
+  Validate.runCrossFieldCheck(form);
   updateCoverPreview(book.cover_url, 'formCoverPreview');
   Modal.open('bookModal');
 }

@@ -4,63 +4,460 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BookNest</title>
-
+    <meta name="description" content="BookNest — DSEU's smart college library management system. Browse books, manage your account, and access library resources.">
+    <title>BookNest | College Library</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ── Hero ────────────────────────────── */
+        .hero {
+            background: linear-gradient(135deg, var(--bn-cream) 0%, #f0e8df 100%);
+            padding: 72px 24px 56px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 700;
+            color: var(--bn-brown-dark);
+            margin-bottom: 14px;
+        }
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--bn-brown-light);
+            max-width: 520px;
+            margin: 0 auto 32px;
+        }
+        .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .hero-btns .btn { min-width: 140px; }
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+        /* ── Books Section ───────────────────── */
+        .books-section {
+            padding: 48px 24px 64px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .section-header h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--bn-brown-dark);
+        }
+        .section-header p { color: var(--bn-brown-light); font-size: 0.9rem; }
+
+        /* Search bar */
+        .home-search {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+        .home-search input {
+            flex: 1;
+            min-width: 220px;
+            padding: 12px 16px;
+            border: 1.5px solid var(--bn-input-border);
+            border-radius: var(--r-md);
+            font-size: 0.95rem;
+            background: var(--bn-white);
+            color: var(--bn-brown-dark);
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+        .home-search input:focus {
+            outline: none;
+            border-color: var(--bn-brown);
+        }
+        .home-search select {
+            padding: 12px 16px;
+            border: 1.5px solid var(--bn-input-border);
+            border-radius: var(--r-md);
+            background: var(--bn-white);
+            color: var(--bn-brown-dark);
+            font-family: inherit;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        /* Book grid */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 24px;
+        }
+
+        .book-card {
+            background: var(--bn-white);
+            border-radius: var(--r-lg);
+            border: 1px solid var(--bn-border);
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: default;
+        }
+        .book-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(101,67,33,0.13);
+        }
+        .book-cover-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+            background: var(--bn-cream);
+        }
+        .book-cover-placeholder {
+            width: 100%;
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #f5ede4 0%, #ede3d8 100%);
+        }
+        .book-card-body {
+            padding: 14px 16px 18px;
+        }
+        .book-card-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--bn-brown-dark);
+            margin-bottom: 4px;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .book-card-author {
+            font-size: 0.8rem;
+            color: var(--bn-brown-light);
+            margin-bottom: 10px;
+        }
+        .book-card-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .badge-genre {
+            font-size: 0.7rem;
+            padding: 3px 9px;
+            background: var(--bn-cream);
+            color: var(--bn-brown);
+            border-radius: 20px;
+            border: 1px solid var(--bn-border);
+            font-weight: 500;
+        }
+        .avail-badge {
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 3px 9px;
+            border-radius: 20px;
+        }
+        .avail-badge.ok  { background: #edfaf3; color: #1a7f4f; }
+        .avail-badge.low { background: #fff8e6; color: #b45309; }
+        .avail-badge.none { background: #fef2f2; color: #b91c1c; }
+
+        /* Loading / empty states */
+        .books-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--bn-brown-light);
+        }
+        .books-state .spinner {
+            width: 40px; height: 40px;
+            border: 3px solid var(--bn-border);
+            border-top-color: var(--bn-brown);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Pagination */
+        .home-pagination {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 36px;
+            flex-wrap: wrap;
+        }
+        .home-pagination button {
+            padding: 8px 16px;
+            border: 1.5px solid var(--bn-border);
+            border-radius: var(--r-sm);
+            background: var(--bn-white);
+            color: var(--bn-brown);
+            cursor: pointer;
+            font-size: 0.88rem;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .home-pagination button:hover,
+        .home-pagination button.active {
+            background: var(--bn-brown);
+            color: var(--bn-white);
+            border-color: var(--bn-brown);
+        }
+        .home-pagination button:disabled { opacity: 0.4; cursor: default; }
+
+        /* Stats strip */
+        .stats-strip {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 24px;
+            background: var(--bn-white);
+            border-top: 1px solid var(--bn-border);
+            border-bottom: 1px solid var(--bn-border);
+        }
+        .stat-chip {
+            text-align: center;
+        }
+        .stat-chip .val {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--bn-brown-dark);
+        }
+        .stat-chip .lbl {
+            font-size: 0.78rem;
+            color: var(--bn-brown-light);
+        }
+    </style>
 </head>
 
 <body>
 
     <!-- Navbar -->
-    <div class="navbar">
+    <nav class="navbar">
         <h2>📚 BookNest</h2>
-        <div class="nav-links">
+        <div class="nav-links" id="navLinks">
             <a href="index.html">Home</a>
-            <a href="login.html">Login</a>
-            <a href="register.html">Register</a>
+            <a href="login.html" id="navLogin">Login</a>
+            <a href="register.html" id="navRegister">Register</a>
+            <a href="dashboard.html" id="navDashboard" style="display:none">Dashboard</a>
+            <a href="api/logout.php" id="navLogout" style="display:none">Logout</a>
         </div>
-    </div>
+    </nav>
 
-    <!-- Hero Section -->
-    <div class="container">
-        <div class="card">
-            <h1>Welcome to BookNest</h1>
-            <p>Your smart college library management system</p>
-
-            <blockquote>
-                "Books are a uniquely portable magic"
-            </blockquote>
-
-            <div class="btn-group">
-                <button onclick="location.href='login.html'">Login</button>
-                <button onclick="location.href='register.html'" class="secondary-btn">Register</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Features -->
-    <section class="features">
-        <h2>Why Choose BookNest?</h2>
-        <div class="feature-boxes">
-            <div class="feature">
-                📖 Manage Books Easily
-            </div>
-            <div class="feature">
-                📝 Store Notes & Papers
-            </div>
-            <div class="feature">
-                🔄 Easy Issue & Return Tracking
-            </div>
+    <!-- Hero -->
+    <section class="hero">
+        <h1>📚 Welcome to BookNest</h1>
+        <p>DSEU's smart digital library — browse, borrow, and discover thousands of books.</p>
+        <div class="hero-btns">
+            <button class="btn primary-btn" onclick="location.href='login.html'" id="heroBtnLogin">Login to Dashboard</button>
+            <button class="btn secondary-btn" onclick="location.href='register.html'" id="heroBtnRegister">Create Account</button>
         </div>
     </section>
 
+    <!-- Stats Strip -->
+    <div class="stats-strip">
+        <div class="stat-chip">
+            <div class="val" id="homeStatTotal">—</div>
+            <div class="lbl">Total Books</div>
+        </div>
+        <div class="stat-chip">
+            <div class="val" id="homeStatAvailable">—</div>
+            <div class="lbl">Available Now</div>
+        </div>
+        <div class="stat-chip">
+            <div class="val" id="homeStatGenres">8+</div>
+            <div class="lbl">Genres</div>
+        </div>
+    </div>
+
+    <!-- Book Catalogue -->
+    <section class="books-section">
+        <div class="section-header">
+            <div>
+                <h2>📖 Library Catalogue</h2>
+                <p>Browse our full collection — no login required</p>
+            </div>
+        </div>
+
+        <!-- Search & Filter -->
+        <div class="home-search">
+            <input type="search" id="homeSearch" placeholder="🔍  Search by title, author, ISBN…" autocomplete="off">
+            <select id="homeGenre">
+                <option value="">All Genres</option>
+                <option>Fiction</option>
+                <option>Dystopian Fiction</option>
+                <option>Classic Fiction</option>
+                <option>Fantasy</option>
+                <option>Mystery/Thriller</option>
+                <option>Philosophical Fiction</option>
+                <option>Science</option>
+                <option>Non-Fiction</option>
+                <option>History</option>
+                <option>Biography</option>
+                <option>Computer Science</option>
+                <option>Mathematics</option>
+                <option>Engineering</option>
+            </select>
+            <select id="homeStatus">
+                <option value="">All Status</option>
+                <option value="available">Available</option>
+                <option value="unavailable">Fully Issued</option>
+            </select>
+        </div>
+
+        <!-- Grid -->
+        <div class="books-grid" id="homeGrid">
+            <div class="books-state">
+                <div class="spinner"></div>
+                <p>Loading catalogue…</p>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="home-pagination" id="homePagination"></div>
+    </section>
+
     <!-- Footer -->
-    <footer>
-        <p>© 2026 BookNest | Empowering College Libraries Digitally</p>
+    <footer class="footer">
+        <p>© 2026 BookNest | Delhi Skill and Entrepreneurship University</p>
     </footer>
 
-</body>
+    <script>
+    // ── Session-aware nav ─────────────────────────────────
+    (function () {
+        try {
+            const s = JSON.parse(sessionStorage.getItem('booknest_session') || 'null');
+            if (s && s.username) {
+                document.getElementById('navLogin').style.display = 'none';
+                document.getElementById('navRegister').style.display = 'none';
+                document.getElementById('navDashboard').style.display = '';
+                document.getElementById('navLogout').style.display = '';
+                document.getElementById('heroBtnLogin').textContent = 'Go to Dashboard';
+                document.getElementById('heroBtnLogin').onclick = () => location.href = 'dashboard.html';
+                document.getElementById('heroBtnRegister').style.display = 'none';
+            }
+        } catch(e) {}
+    })();
 
+    // ── Catalogue ─────────────────────────────────────────
+    const PER = 12;
+    let currentPage = 1;
+    let searchTimer;
+
+    async function loadCatalogue(page = 1) {
+        currentPage = page;
+        const grid  = document.getElementById('homeGrid');
+        const q     = document.getElementById('homeSearch').value.trim();
+        const genre = document.getElementById('homeGenre').value;
+        const status = document.getElementById('homeStatus').value;
+
+        grid.innerHTML = `<div class="books-state"><div class="spinner"></div><p>Loading catalogue…</p></div>`;
+
+        const params = new URLSearchParams({ action: 'list', page, per: PER });
+        if (genre)  params.set('genre', genre);
+        if (status) params.set('status', status);
+        if (q)      params.set('q', q);
+
+        try {
+            const res  = await fetch('api/books.php?' + params);
+            const data = await res.json();
+            if (!data.success) throw new Error(data.message);
+
+            // Stats
+            if (page === 1 && !genre && !status && !q) {
+                document.getElementById('homeStatTotal').textContent = data.meta.total;
+            }
+
+            renderGrid(data.data);
+            renderPagination(data.meta);
+        } catch (e) {
+            grid.innerHTML = `<div class="books-state"><p>⚠️ Could not load books. Make sure XAMPP is running.</p></div>`;
+        }
+    }
+
+    function renderGrid(books) {
+        const grid = document.getElementById('homeGrid');
+        if (!books || books.length === 0) {
+            grid.innerHTML = `<div class="books-state"><p>📭 No books found matching your search.</p></div>`;
+            return;
+        }
+        grid.innerHTML = books.map(b => {
+            const avail = parseInt(b.available);
+            const total = parseInt(b.total_copies);
+            const pct   = total > 0 ? avail / total : 0;
+            const cls   = avail === 0 ? 'none' : pct <= 0.25 ? 'low' : 'ok';
+            const label = avail === 0 ? 'Fully Issued' : `${avail} / ${total} Available`;
+
+            const coverHtml = b.cover_url
+                ? `<img class="book-cover-img" src="${esc(b.cover_url)}" alt="Cover of ${esc(b.title)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+                : '';
+            const placeholder = `<div class="book-cover-placeholder" ${b.cover_url ? 'style="display:none"' : ''}>📚</div>`;
+
+            return `
+            <div class="book-card">
+                ${coverHtml}${placeholder}
+                <div class="book-card-body">
+                    <div class="book-card-title">${esc(b.title)}</div>
+                    <div class="book-card-author">by ${esc(b.author)}</div>
+                    <div class="book-card-meta">
+                        ${b.genre ? `<span class="badge-genre">${esc(b.genre)}</span>` : '<span></span>'}
+                        <span class="avail-badge ${cls}">${label}</span>
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    function renderPagination(meta) {
+        const el  = document.getElementById('homePagination');
+        const { page, total_pages } = meta;
+        if (total_pages <= 1) { el.innerHTML = ''; return; }
+
+        let html = `<button ${page<=1?'disabled':''} onclick="loadCatalogue(${page-1})">← Prev</button>`;
+        for (let i = 1; i <= total_pages; i++) {
+            if (total_pages > 7 && Math.abs(i - page) > 2 && i !== 1 && i !== total_pages) {
+                if (i === 2 || i === total_pages - 1) html += `<button disabled>…</button>`;
+                continue;
+            }
+            html += `<button class="${i===page?'active':''}" onclick="loadCatalogue(${i})">${i}</button>`;
+        }
+        html += `<button ${page>=total_pages?'disabled':''} onclick="loadCatalogue(${page+1})">Next →</button>`;
+        el.innerHTML = html;
+    }
+
+    function esc(str) {
+        return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    // ── Events ────────────────────────────────────────────
+    document.getElementById('homeSearch').addEventListener('input', e => {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => loadCatalogue(1), 300);
+    });
+    document.getElementById('homeGenre').addEventListener('change', () => loadCatalogue(1));
+    document.getElementById('homeStatus').addEventListener('change', () => loadCatalogue(1));
+
+    // ── Load stats separately ─────────────────────────────
+    async function loadStats() {
+        try {
+            const r1 = await fetch('api/books.php?action=list&per=1');
+            const d1 = await r1.json();
+            if (d1.success) document.getElementById('homeStatTotal').textContent = d1.meta.total;
+
+            const r2 = await fetch('api/books.php?action=list&per=1&status=available');
+            const d2 = await r2.json();
+            if (d2.success) document.getElementById('homeStatAvailable').textContent = d2.meta.total;
+        } catch(e) {}
+    }
+
+    loadCatalogue(1);
+    loadStats();
+    </script>
+
+</body>
 </html>

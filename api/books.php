@@ -60,12 +60,22 @@ function listBooks(): void {
     $pdo  = getDB();
     $page = max(1, intval($_GET['page'] ?? 1));
     $per  = max(1, min(100, intval($_GET['per'] ?? 10)));
-    $genre = $_GET['genre'] ?? '';
+    $genre  = $_GET['genre']  ?? '';
     $status = $_GET['status'] ?? '';  // 'available' | 'unavailable'
+    $q      = trim($_GET['q'] ?? '');
 
-    $where = ['1=1'];
+    $where  = ['1=1'];
     $params = [];
 
+    if ($q !== '') {
+        $like = '%' . $q . '%';
+        $where[] = '(title LIKE :q1 OR author LIKE :q2 OR isbn LIKE :q3 OR publisher LIKE :q4 OR genre LIKE :q5)';
+        $params[':q1'] = $like;
+        $params[':q2'] = $like;
+        $params[':q3'] = $like;
+        $params[':q4'] = $like;
+        $params[':q5'] = $like;
+    }
     if ($genre !== '') {
         $where[] = 'genre = :genre';
         $params[':genre'] = $genre;

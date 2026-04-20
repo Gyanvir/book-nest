@@ -1,10 +1,4 @@
 <?php
-// ============================================================
-//  BookNest — Register Handler (PHP Backend)
-//  api/register.php
-//  Accepts POST: fullname, email, username, password, confirm_password
-//  Returns JSON: { success, message }
-// ============================================================
 
 ob_start();
 error_reporting(0);
@@ -34,28 +28,24 @@ $username        = trim($_POST['username']         ?? '');
 $password        = $_POST['password']              ?? '';
 $confirmPassword = $_POST['confirm_password']      ?? '';
 
-// ── 1. Required fields ────────────────────────────────────
 if (!$fullname || !$email || !$username || !$password || !$confirmPassword) {
     ob_end_clean();
     echo json_encode(['success' => false, 'message' => 'All fields are required.']);
     exit;
 }
 
-// ── 2. Full name ──────────────────────────────────────────
 if (strlen($fullname) < 2) {
     ob_end_clean();
     echo json_encode(['success' => false, 'message' => 'Full name must be at least 2 characters.']);
     exit;
 }
 
-// ── 3. Email format ───────────────────────────────────────
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     ob_end_clean();
     echo json_encode(['success' => false, 'message' => 'Please enter a valid email address.']);
     exit;
 }
 
-// ── 3b. Email domain restriction ─────────────────────────
 $allowedDomain = 'dseu.ac.in';
 if (!str_ends_with($email, '@' . $allowedDomain)) {
     ob_end_clean();
@@ -63,14 +53,12 @@ if (!str_ends_with($email, '@' . $allowedDomain)) {
     exit;
 }
 
-// ── 4. Username format ────────────────────────────────────
 if (!preg_match('/^[a-zA-Z0-9_]{3,20}$/', $username)) {
     ob_end_clean();
     echo json_encode(['success' => false, 'message' => 'Username must be 3-20 characters (letters, numbers, underscore only).']);
     exit;
 }
 
-// ── 5. Password validation ────────────────────────────────
 $pwErrors = [];
 if (strlen($password) < 8)             $pwErrors[] = 'at least 8 characters';
 if (!preg_match('/[A-Z]/', $password)) $pwErrors[] = 'one uppercase letter';
@@ -84,14 +72,12 @@ if (!empty($pwErrors)) {
     exit;
 }
 
-// ── 6. Confirm password match ─────────────────────────────
 if ($password !== $confirmPassword) {
     ob_end_clean();
     echo json_encode(['success' => false, 'message' => 'Passwords do not match.']);
     exit;
 }
 
-// ── 7. Check duplicates ───────────────────────────────────
 try {
     $pdo = getDB();
 
@@ -111,7 +97,6 @@ try {
         exit;
     }
 
-    // ── 8. Hash password & insert ─────────────────────────
     $passwordHash = password_hash($password, PASSWORD_BCRYPT);
 
     $stmt = $pdo->prepare(

@@ -1,14 +1,3 @@
-// ============================================
-// BOOKNEST  JAVASCRIPT
-// Features:
-// 1. Mobile Navbar Toggle
-// 2. Register Password Match Validation
-// 3. Issue Return Fine Auto Calculation
-// ============================================
-
-// ===============================
-// 1. MOBILE NAVBAR TOGGLE
-// ===============================
 const menuToggle = document.getElementById("menuToggle");
 const navLinks = document.getElementById("navLinks");
 
@@ -18,9 +7,6 @@ if (menuToggle) {
   });
 }
 
-// ===============================
-// 2. REGISTER PASSWORD VALIDATION
-// ===============================
 const registerForm = document.querySelector(".register-form");
 
 if (registerForm) {
@@ -37,11 +23,6 @@ if (registerForm) {
   });
 }
 
-// ===============================
-// 3. ISSUE RETURN FINE CALCULATION
-// Max Limit = 15 Days
-// Fine = ₹5 per extra day
-// ===============================
 const issueForm = document.querySelector(".issue-return-form");
 
 if (issueForm) {

@@ -1,11 +1,7 @@
 <?php
-// ============================================================
-//  BookNest — Login API
-//  api/login.php
-// ============================================================
 
-ob_start();                      // Buffer any stray PHP output
-error_reporting(0);              // Suppress PHP notices/warnings from leaking into JSON
+ob_start();
+error_reporting(0);
 ini_set('display_errors', '0');
 
 header('Content-Type: application/json');
@@ -30,14 +26,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $usernameOrEmail = trim($_POST['usernameOrEmail'] ?? '');
 $password        = $_POST['password'] ?? '';
 
-// ── 1. Basic validation ───────────────────────────────────
 if (empty($usernameOrEmail) || empty($password)) {
     ob_end_clean();
     echo json_encode(['success' => false, 'message' => 'Username/email and password are required.']);
     exit;
 }
 
-// ── 2. Find user in DB ────────────────────────────────────
 try {
     $pdo  = getDB();
     $val  = strtolower($usernameOrEmail);
@@ -58,14 +52,12 @@ if (!$user) {
     exit;
 }
 
-// ── 3. Verify password ────────────────────────────────────
 if (!password_verify($password, $user['password_hash'])) {
     ob_end_clean();
     echo json_encode(['success' => false, 'message' => 'Incorrect password. Please try again.']);
     exit;
 }
 
-// ── 4. Create session ─────────────────────────────────────
 $_SESSION['user_id']   = $user['id'];
 $_SESSION['fullname']  = $user['fullname'];
 $_SESSION['username']  = $user['username'];

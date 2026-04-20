@@ -1,9 +1,4 @@
 <?php
-// ============================================================
-//  BookNest — Books CRUD API
-//  Module 3: api/books.php
-//  Actions: list | get | add | update | delete | search
-// ============================================================
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
@@ -17,7 +12,6 @@ require_once __DIR__ . '/db.php';
 $method = $_SERVER['REQUEST_METHOD'];
 $action = $_GET['action'] ?? '';
 
-// ── Route ────────────────────────────────────────────────────
 try {
     switch ($method) {
 
@@ -54,14 +48,12 @@ try {
 }
 
 
-// ── Handlers ─────────────────────────────────────────────────
-
 function listBooks(): void {
     $pdo  = getDB();
     $page = max(1, intval($_GET['page'] ?? 1));
     $per  = max(1, min(100, intval($_GET['per'] ?? 10)));
     $genre  = $_GET['genre']  ?? '';
-    $status = $_GET['status'] ?? '';  // 'available' | 'unavailable'
+    $status = $_GET['status'] ?? '';
     $q      = trim($_GET['q'] ?? '');
 
     $where  = ['1=1'];
@@ -88,12 +80,10 @@ function listBooks(): void {
 
     $whereSQL = implode(' AND ', $where);
 
-    // total count
     $cntStmt = $pdo->prepare("SELECT COUNT(*) FROM books WHERE $whereSQL");
     $cntStmt->execute($params);
     $total = (int)$cntStmt->fetchColumn();
 
-    // paginated rows
     $offset = ($page - 1) * $per;
     $stmt = $pdo->prepare(
         "SELECT * FROM books WHERE $whereSQL ORDER BY created_at DESC LIMIT :limit OFFSET :offset"
@@ -172,7 +162,7 @@ function addBook(array $d): void {
         ':year'         => $d['year'] ? intval($d['year']) : null,
         ':genre'        => trim($d['genre'] ?? ''),
         ':total_copies' => $copies,
-        ':available'    => $copies,           // all copies available on add
+        ':available'    => $copies,
         ':cover_url'    => trim($d['cover_url'] ?? ''),
         ':description'  => trim($d['description'] ?? ''),
     ]);
@@ -218,8 +208,6 @@ function deleteBook(array $d): void {
     respond(true, 'Book deleted successfully');
 }
 
-
-// ── Helpers ──────────────────────────────────────────────────
 
 function getBody(): array {
     $raw = file_get_contents('php://input');

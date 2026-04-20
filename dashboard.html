@@ -9,14 +9,13 @@
     <link rel="stylesheet" href="style.css">
     <script defer src="script.js"></script>
 
-    <!-- Module 2: Session Guard -->
     <script src="js/auth.js"></script>
     <script src="js/session-guard.js"></script>
 </head>
 
 <body>
 
-    <!-- Navbar -->
+
     <header class="navbar">
         <div class="logo">📚 BookNest</div>
 
@@ -30,29 +29,23 @@
         <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
     </header>
 
-    <!-- Dashboard Layout -->
     <section class="dashboard">
 
-        <!-- Sidebar -->
         <aside class="sidebar">
             <h2>Library Menu</h2>
             <ul>
                 <li><a href="dashboard.html" class="active">🏠 Dashboard Home</a></li>
-                <!-- Admin only -->
                 <li class="admin-only"><a href="admin/">📖 Manage Books</a></li>
                 <li class="admin-only"><a href="issue_return.html">🔄 Issue / Return</a></li>
-                <!-- All users -->
                 <li><a href="search_books.html">🔍 Search Materials</a></li>
                 <li><a href="account.html">👤 User Account</a></li>
             </ul>
         </aside>
 
-        <!-- Main Content -->
         <main class="dashboard-main">
             <h1>Welcome, <span data-auth="fullname">Admin</span>!</h1>
             <p>Manage all library resources in one place.</p>
 
-            <!-- Stats Cards -->
             <div class="dashboard-cards">
 
                 <div class="dash-card">
@@ -77,7 +70,6 @@
 
             </div>
 
-            <!-- Quick Action Buttons -->
             <div class="quick-actions">
                 <button class="admin-only" onclick="location.href='admin/'">📖 Manage Books</button>
                 <button class="admin-only secondary-btn" onclick="location.href='issue_return.html'">🔄 Issue / Return</button>
@@ -85,7 +77,6 @@
                 <button onclick="location.href='account.html'" class="secondary-btn">👤 My Account</button>
             </div>
 
-            <!-- Recent Activity -->
             <div class="recent-activity">
                 <h2>Recent Activity</h2>
                 <ul>
@@ -99,13 +90,11 @@
 
     </section>
 
-    <!-- Footer -->
     <footer class="footer">
         <p>© 2026 BookNest | College Library Management System</p>
     </footer>
 
     <script>
-        // Hide admin-only elements for non-admin users
         document.addEventListener('DOMContentLoaded', () => {
             const session = Auth.getSession();
             if (!session || session.role !== 'admin') {

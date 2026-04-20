@@ -1,11 +1,5 @@
-// ============================================================
-//  BookNest — Module 2: Register Page Handler
-//  module2/register-handler.js
-// ============================================================
-
 document.addEventListener('DOMContentLoaded', () => {
 
-  // If already logged in, skip registration page
   if (Auth.isLoggedIn()) {
     window.location.href = 'dashboard.html';
     return;
@@ -15,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const alertBox    = document.getElementById('registerAlert');
   const registerBtn = document.getElementById('registerBtn');
 
-  // ── Show/Hide Password Toggles ───────────────────────────
   function setupToggle(btnId, inputId) {
     const btn   = document.getElementById(btnId);
     const input = document.getElementById(inputId);
@@ -31,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
   setupToggle('togglePw', 'password');
   setupToggle('toggleConfirmPw', 'confirmPassword');
 
-  // ── Alert Helper ─────────────────────────────────────────
   function showAlert(message, type = 'error') {
     alertBox.textContent = message;
     alertBox.className = `alert-box show ${type}`;
@@ -65,7 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ── Live Password Strength & Rules ───────────────────────
   const pwInput       = document.getElementById('password');
   const strengthBar   = document.getElementById('pwStrengthBar');
   const strengthLabel = document.getElementById('pwStrengthLabel');
@@ -87,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   function updatePasswordUI(password) {
-    // Update rule indicators
     Object.entries(ruleMap).forEach(([id, test]) => {
       const el = document.getElementById(id);
       if (!el) return;
@@ -96,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
       el.className   = passes ? 'pass' : 'fail';
     });
 
-    // Strength bar
     if (password.length === 0) {
       strengthBar.className = 'pw-strength-bar';
       strengthLabel.textContent = '';
@@ -115,7 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updatePasswordUI(pwInput.value);
     clearFieldError('password');
     clearAlert();
-    // Re-check confirm match live
     const confirm = document.getElementById('confirmPassword').value;
     if (confirm) {
       if (confirm !== pwInput.value) {
@@ -126,7 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // ── Live confirm password check ──────────────────────────
   document.getElementById('confirmPassword').addEventListener('input', function () {
     const pw = pwInput.value;
     if (this.value && this.value !== pw) {
@@ -136,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // ── Live email domain check ──────────────────────────────
   const emailInput = document.getElementById('email');
   if (emailInput) {
     emailInput.addEventListener('input', () => {
@@ -149,13 +135,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ── Clear errors on other fields ─────────────────────────
   ['fullname', 'username'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener('input', () => { clearFieldError(id); clearAlert(); });
   });
 
-  // ── Form Submit ─────────────────────────────────────────
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     clearAllErrors();
@@ -170,7 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
     registerBtn.disabled = true;
     registerBtn.textContent = 'Creating account...';
 
-    // Auth.register now calls api/register.php (async)
     const result = await Auth.register({ fullname, email, username, password, confirmPassword });
 
     if (result.success) {

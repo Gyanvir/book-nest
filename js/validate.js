@@ -1,8 +1,3 @@
-// ============================================================
-//  BookNest — Form Validation
-//  Module 3: js/validate.js
-// ============================================================
-
 const Validate = (() => {
 
   const RULES = {
@@ -73,7 +68,6 @@ const Validate = (() => {
     },
   };
 
-  /** Validate a single field. Returns error string or null. */
   function validateField(name, value) {
     const rule = RULES[name];
     if (!rule) return null;
@@ -81,7 +75,7 @@ const Validate = (() => {
     const val = String(value ?? '').trim();
 
     if (rule.required && val === '') return `${rule.label} is required`;
-    if (val === '' && !rule.required) return null; // optional, empty → ok
+    if (val === '' && !rule.required) return null;
 
     if (rule.minLength && val.length < rule.minLength)
       return `${rule.label} must be at least ${rule.minLength} character(s)`;
@@ -97,11 +91,6 @@ const Validate = (() => {
     return null;
   }
 
-  /**
-   * Validate an entire form.
-   * @param {HTMLFormElement} form
-   * @returns {{ valid: boolean, errors: Record<string, string> }}
-   */
   function validateForm(form) {
     const errors = {};
     const inputs = form.querySelectorAll('[data-validate]');
@@ -112,7 +101,6 @@ const Validate = (() => {
       if (err) errors[name] = err;
     });
 
-    // Cross-field: available <= total_copies
     const tc = form.querySelector('[data-validate="total_copies"]');
     const av = form.querySelector('[data-validate="available"]');
     if (tc && av && av.value !== '') {
@@ -126,9 +114,6 @@ const Validate = (() => {
     return { valid: Object.keys(errors).length === 0, errors };
   }
 
-  /**
-   * Attach real-time validation to a form.
-   */
   function attachLiveValidation(form) {
     const inputs = form.querySelectorAll('[data-validate]');
     inputs.forEach((el) => {
@@ -137,7 +122,6 @@ const Validate = (() => {
         const err = validateField(name, el.value);
         showFieldError(form, name, err);
 
-        // Re-run cross-field check whenever total_copies or available changes
         if (name === 'total_copies' || name === 'available') {
           runCrossFieldCheck(form);
         }
@@ -154,12 +138,10 @@ const Validate = (() => {
     });
   }
 
-  /** Cross-field: available must not exceed total_copies */
   function runCrossFieldCheck(form) {
     const tc = form.querySelector('[data-validate="total_copies"]');
     const av = form.querySelector('[data-validate="available"]');
     if (!tc || !av || av.value === '') {
-      // Clear the error if available is empty
       showFieldError(form, 'available', null);
       return;
     }
@@ -168,7 +150,7 @@ const Validate = (() => {
     if (!isNaN(tcVal) && !isNaN(avVal) && avVal > tcVal) {
       showFieldError(form, 'available', 'Available copies cannot exceed total copies');
     } else {
-      showFieldError(form, 'available', null); // clear the error
+      showFieldError(form, 'available', null);
     }
   }
 

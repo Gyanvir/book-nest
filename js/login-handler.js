@@ -1,11 +1,5 @@
-// ============================================================
-//  BookNest — Module 2: Login Page Handler
-//  module2/login-handler.js
-// ============================================================
-
 document.addEventListener('DOMContentLoaded', () => {
 
-  // If already logged in, skip login page
   if (Auth.isLoggedIn()) {
     window.location.href = 'dashboard.html';
     return;
@@ -17,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggleBtn  = document.getElementById('toggleLoginPw');
   const pwInput    = document.getElementById('loginPassword');
 
-  // ── Show/Hide Password Toggle ───────────────────────────
   if (toggleBtn && pwInput) {
     toggleBtn.addEventListener('click', () => {
       const isHidden = pwInput.type === 'password';
@@ -26,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ── Alert Helper ────────────────────────────────────────
   function showAlert(message, type = 'error') {
     alertBox.textContent = message;
     alertBox.className = `alert-box show ${type}`;
@@ -52,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ── Form Submit ─────────────────────────────────────────
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     clearFieldErrors();
@@ -61,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const usernameOrEmail = document.getElementById('usernameOrEmail').value.trim();
     const password        = document.getElementById('loginPassword').value;
 
-    // Client-side empty checks
     let hasError = false;
     if (!usernameOrEmail) { showFieldError('usernameOrEmail', 'Please enter your username or email.'); hasError = true; }
     if (!password)         { showFieldError('password', 'Please enter your password.'); hasError = true; }
@@ -82,7 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Clear error on input
   document.getElementById('usernameOrEmail').addEventListener('input', () => {
     document.getElementById('err-usernameOrEmail').classList.remove('show');
     clearAlert();

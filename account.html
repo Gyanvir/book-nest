@@ -1,4 +1,3 @@
-<!-- account.html — Module 2: Updated with session guard & dynamic user info -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,44 +9,40 @@
     <link rel="stylesheet" href="style.css">
     <script defer src="script.js"></script>
 
-    <!-- ✅ Module 2: Session Guard (protects this page + handles logout) -->
     <script src="js/auth.js"></script>
     <script src="js/session-guard.js"></script>
 </head>
 
 <body>
 
-    <!-- Navbar -->
+
     <header class="navbar">
         <div class="logo">📚 BookNest</div>
 
         <nav class="nav-links" id="navLinks">
             <a href="index.html">Home</a>
             <a href="dashboard.html">Dashboard</a>
-            <!-- ✅ class="logout-btn" makes session-guard.js handle logout properly -->
             <a href="login.html" class="logout-btn">Logout</a>
         </nav>
         <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
     </header>
 
-    <!-- Account Section -->
+
     <section class="account-section">
         <div class="account-container">
 
             <h1>My Account</h1>
             <p>Manage your personal library profile and borrowed materials.</p>
 
-            <!-- Profile Card -->
             <div class="profile-card">
                 <h2>👤 User Profile</h2>
-                <!-- ✅ data-auth fills these in automatically from session -->
                 <p><strong>Name:</strong> <span data-auth="fullname"></span></p>
                 <p><strong>User ID:</strong> <span data-auth="id"></span></p>
                 <p><strong>Email:</strong> <span data-auth="email"></span></p>
                 <p><strong>Role:</strong> <span data-auth="role"></span></p>
             </div>
 
-            <!-- Borrowed Materials -->
+
             <div class="borrowed-books">
                 <h2>📚 Borrowed Materials</h2>
 
@@ -64,31 +59,17 @@
 
                     <tbody>
                         <tr>
-                            <td>BK101</td>
-                            <td>Operating Systems</td>
-                            <td>2026-04-01</td>
-                            <td>2026-04-15</td>
-                            <td>Issued</td>
-                        </tr>
-
-                        <tr>
-                            <td>BK205</td>
-                            <td>DBMS Notes</td>
-                            <td>2026-04-03</td>
-                            <td>2026-04-18</td>
-                            <td>Issued</td>
+                            <td colspan="5" style="text-align:center; color:#999; padding: 24px;">No books currently borrowed.</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <!-- Account Actions -->
             <div class="account-actions">
                 <button onclick="location.href='dashboard.html'" class="btn primary-btn">
                     Back to Dashboard
                 </button>
 
-                <!-- ✅ logout-btn class handles proper session cleanup -->
                 <button class="btn secondary-btn logout-btn">
                     Logout
                 </button>

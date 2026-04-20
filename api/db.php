@@ -1,13 +1,9 @@
 <?php
-// ============================================================
-//  BookNest — Database Connection (PDO)
-//  Module 3: api/db.php
-// ============================================================
 
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'booknest');
-define('DB_USER', 'root');        // ← your MySQL username (XAMPP default: root)
-define('DB_PASS', '');            // ← your MySQL password (XAMPP default: blank)
+define('DB_USER', 'root');
+define('DB_PASS', '');
 define('DB_CHARSET', 'utf8mb4');
 
 function getDB(): PDO
@@ -16,9 +12,9 @@ function getDB(): PDO
     if ($pdo === null) {
         $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;
         $options = [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES => false,
+            PDO::ATTR_EMULATE_PREPARES   => false,
         ];
         try {
             $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);

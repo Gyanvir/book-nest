@@ -1,9 +1,3 @@
-// ============================================================
-//  BookNest — UI Helpers (modals, toasts, pagination)
-//  Module 3: js/ui.js
-// ============================================================
-
-// ── Toast Notifications ──────────────────────────────────────
 const Toast = (() => {
   let container;
 
@@ -40,7 +34,6 @@ const Toast = (() => {
   return { show };
 })();
 
-// ── Modal ────────────────────────────────────────────────────
 const Modal = (() => {
   function open(id) {
     const overlay = document.getElementById(id);
@@ -63,7 +56,6 @@ const Modal = (() => {
     document.body.style.overflow = '';
   }
 
-  // Close when clicking the backdrop
   function initBackdropClose() {
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
       overlay.addEventListener('click', (e) => {
@@ -75,7 +67,6 @@ const Modal = (() => {
   return { open, close, closeAll, initBackdropClose };
 })();
 
-// ── Slide Panel ──────────────────────────────────────────────
 const Panel = (() => {
   function open(id) {
     const overlay = document.getElementById(id + 'Overlay');
@@ -96,7 +87,6 @@ const Panel = (() => {
   return { open, close };
 })();
 
-// ── Pagination ───────────────────────────────────────────────
 const Pagination = (() => {
   function render(containerId, meta, onPageChange) {
     const container = document.getElementById(containerId);
@@ -114,11 +104,9 @@ const Pagination = (() => {
     if (!ctrl) return;
     ctrl.innerHTML = '';
 
-    // Prev button
     const prev = makeBtn('‹', page <= 1, () => onPageChange(page - 1));
     ctrl.appendChild(prev);
 
-    // Page numbers with ellipsis
     const pages = getPageNumbers(page, total_pages);
     pages.forEach((p) => {
       if (p === '...') {
@@ -133,7 +121,6 @@ const Pagination = (() => {
       }
     });
 
-    // Next button
     const next = makeBtn('›', page >= total_pages, () => onPageChange(page + 1));
     ctrl.appendChild(next);
   }
@@ -163,7 +150,6 @@ const Pagination = (() => {
   return { render };
 })();
 
-// ── Sort Helper ──────────────────────────────────────────────
 const TableSort = (() => {
   let currentCol = '', currentDir = 'asc';
 
@@ -199,7 +185,6 @@ const TableSort = (() => {
   return { sortData, updateHeaders, getState };
 })();
 
-// ── Debounce ─────────────────────────────────────────────────
 function debounce(fn, delay = 300) {
   let timer;
   return (...args) => {
@@ -208,7 +193,6 @@ function debounce(fn, delay = 300) {
   };
 }
 
-// ── Format helpers ───────────────────────────────────────────
 function escHtml(str) {
   return String(str ?? '')
     .replace(/&/g,'&amp;')

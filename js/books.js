@@ -1,29 +1,20 @@
-// ============================================================
-//  BookNest — Books CRUD Logic
-//  Module 3: js/books.js
-//  Depends on: ui.js, validate.js
-// ============================================================
-
 const API_BASE = '../api/books.php';
 
-// ── State ────────────────────────────────────────────────────
 const state = {
-  books:       [],      // current page data
-  allBooks:    [],      // all books for client-side search
+  books:       [],
+  allBooks:    [],
   meta:        { page: 1, per_page: 10, total: 0, total_pages: 1 },
   filters:     { q: '', genre: '', status: '' },
-  editingId:   null,    // book_id being edited (null = add)
-  deletingId:  null,    // book_id being deleted
-  viewingBook: null,    // book being viewed in panel
+  editingId:   null,
+  deletingId:  null,
+  viewingBook: null,
   sortCol:     '',
   sortDir:     'asc',
 };
 
-// ── DOM Refs ─────────────────────────────────────────────────
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
 
-// ── Boot ─────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   initUI();
   loadBooks();
@@ -31,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initUI() {
-  // Search (debounced)
   $('#searchInput').addEventListener('input', debounce((e) => {
     state.filters.q = e.target.value.trim();
     state.meta.page = 1;
@@ -42,24 +32,20 @@ function initUI() {
     }
   }, 250));
 
-  // Genre filter
   $('#genreFilter').addEventListener('change', (e) => {
     state.filters.genre = e.target.value;
     state.meta.page = 1;
     loadBooks();
   });
 
-  // Status filter
   $('#statusFilter').addEventListener('change', (e) => {
     state.filters.status = e.target.value;
     state.meta.page = 1;
     loadBooks();
   });
 
-  // Add Book button
   $('#btnAddBook').addEventListener('click', openAddModal);
 
-  // Modal close buttons
   $$('.modal-close, [data-close-modal]').forEach(btn => {
     btn.addEventListener('click', () => {
       const target = btn.dataset.closeModal || btn.closest('.modal-overlay')?.id;
@@ -67,22 +53,17 @@ function initUI() {
     });
   });
 
-  // View panel close
   $('#btnClosePanel').addEventListener('click', () => Panel.close('viewPanel'));
   $('#viewPanelOverlay').addEventListener('click', () => Panel.close('viewPanel'));
 
-  // Form submit — Add / Edit
   $('#bookForm').addEventListener('submit', handleFormSubmit);
 
-  // Cover URL live preview
   $('#fieldCover_url').addEventListener('input', debounce((e) => {
     updateCoverPreview(e.target.value, 'formCoverPreview');
   }, 400));
 
-  // Confirm delete
   $('#btnConfirmDelete').addEventListener('click', confirmDelete);
 
-  // Sort headers
   $$('[data-col]').forEach(th => {
     th.addEventListener('click', () => {
       const col = th.dataset.col;
@@ -93,19 +74,14 @@ function initUI() {
     });
   });
 
-  // Modal backdrop close
   Modal.initBackdropClose();
 
-  // Mobile hamburger
   $('#hamburger')?.addEventListener('click', () => {
     $('#sidebar').classList.toggle('mobile-open');
   });
 
-  // Attach live validation to form
   Validate.attachLiveValidation($('#bookForm'));
 }
-
-// ── API Calls ─────────────────────────────────────────────────
 
 async function loadBooks() {
   showTableState('loading');
@@ -146,7 +122,6 @@ async function loadStats() {
     if (data.success) {
       $('#statTotalBooks').textContent = data.meta.total;
     }
-    // fetch available count
     const res2  = await fetch(`${API_BASE}?action=list&per=1&status=available`);
     const data2 = await res2.json();
     if (data2.success) $('#statAvailable').textContent = data2.meta.total;
@@ -154,7 +129,7 @@ async function loadStats() {
     const res3  = await fetch(`${API_BASE}?action=list&per=1&status=unavailable`);
     const data3 = await res3.json();
     if (data3.success) $('#statUnavailable').textContent = data3.meta.total;
-  } catch { /* stats are non-critical */ }
+  } catch { }
 }
 
 function updateStats(total) {
@@ -183,8 +158,6 @@ async function deleteBookById(id) {
   return res.json();
 }
 
-// ── Table Render ─────────────────────────────────────────────
-
 function renderTable(books) {
   const tbody = $('#booksTableBody');
   if (!tbody) return;
@@ -197,7 +170,6 @@ function renderTable(books) {
   hideTableState();
   tbody.innerHTML = books.map(book => buildRow(book)).join('');
 
-  // Attach row action listeners
   tbody.querySelectorAll('.btn-edit').forEach(btn => {
     btn.addEventListener('click', () => openEditModal(parseInt(btn.dataset.id)));
   });
@@ -254,8 +226,6 @@ function buildRow(book) {
   </tr>`.trim();
 }
 
-// ── Table States ─────────────────────────────────────────────
-
 function showTableState(type, msg) {
   const tbody = $('#booksTableBody');
   const msgs = {
@@ -266,9 +236,7 @@ function showTableState(type, msg) {
   if (tbody) tbody.innerHTML = msgs[type] ?? '';
 }
 
-function hideTableState() { /* rows are already replaced */ }
-
-// ── Client-side Search ───────────────────────────────────────
+function hideTableState() { }
 
 function clientSearch() {
   const q = state.filters.q.toLowerCase();
@@ -280,12 +248,9 @@ function clientSearch() {
     b.genre?.toLowerCase().includes(q)
   );
   renderTable(filtered);
-  // Update pagination info for filtered count
   const fakeMeta = { ...state.meta, total: filtered.length, total_pages: 1, page: 1 };
   Pagination.render('paginationBar', fakeMeta, () => {});
 }
-
-// ── Add / Edit Modal ─────────────────────────────────────────
 
 function openAddModal() {
   state.editingId = null;
@@ -311,7 +276,6 @@ function openEditModal(id) {
   $('#modalSubtitle').textContent = 'Update the book details below';
   $('#fieldAvailable').closest('.form-group').style.display = '';
 
-  // Pre-fill fields — direct ID map (avoids capitalize() mismatch with underscored IDs)
   const fieldMap = {
     isbn:         'fieldIsbn',
     title:        'fieldTitle',
@@ -328,7 +292,6 @@ function openEditModal(id) {
     const el = $(`#${id}`);
     if (el) el.value = book[key] ?? '';
   }
-  // Validate cross-field immediately so no stale errors show on open
   Validate.runCrossFieldCheck(form);
   updateCoverPreview(book.cover_url, 'formCoverPreview');
   Modal.open('bookModal');
@@ -384,8 +347,6 @@ async function handleFormSubmit(e) {
   }
 }
 
-// ── Delete Confirm ────────────────────────────────────────────
-
 function openDeleteConfirm(id, title) {
   state.deletingId = id;
   $('#deleteBookTitle').textContent = title;
@@ -415,14 +376,11 @@ async function confirmDelete() {
   }
 }
 
-// ── View Panel ────────────────────────────────────────────────
-
 function openViewPanel(id) {
   const book = state.books.find(b => parseInt(b.book_id) === id);
   if (!book) return;
   state.viewingBook = book;
 
-  // Populate panel
   $('#viewTitle').textContent    = book.title;
   $('#viewIsbn').textContent     = book.isbn;
   $('#viewAuthor').textContent   = book.author;
@@ -443,8 +401,6 @@ function openViewPanel(id) {
   Panel.open('viewPanel');
 }
 
-// ── Cover Preview ─────────────────────────────────────────────
-
 function updateCoverPreview(url, previewId) {
   const el = $(`#${previewId}`);
   if (!el) return;
@@ -454,8 +410,6 @@ function updateCoverPreview(url, previewId) {
     el.innerHTML = '📚';
   }
 }
-
-// ── Utility ───────────────────────────────────────────────────
 
 function capitalize(str) {
   return str.replace(/_([a-z])/g, (_, c) => c.toUpperCase())

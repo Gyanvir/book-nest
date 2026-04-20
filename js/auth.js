@@ -1,27 +1,12 @@
-// ============================================================
-//  BookNest — Module 2: Authentication & Session Management
-//  js/auth.js
-//
-//  Hybrid auth:
-//    - register()  → POST api/register.php  (MySQL)
-//    - login()     → POST api/login.php     (MySQL)
-//    - Session stored in sessionStorage after PHP confirms
-//    - session-guard.js uses getSession() / requireLogin()
-// ============================================================
-
 const Auth = (() => {
 
   const SESSION_KEY = 'booknest_session';
 
-  // ── Resolve API base (works whether page is at root or /admin/) ──
   function apiUrl(endpoint) {
-    // Find the root by detecting if we're inside /admin/
     const path = window.location.pathname;
     const inSubdir = path.includes('/admin/');
     return (inSubdir ? '../' : '') + 'api/' + endpoint;
   }
-
-  // ── Password Strength (still used by register-handler UI) ───────
 
   const PASSWORD_RULES = {
     minLength: 8,
@@ -59,30 +44,20 @@ const Auth = (() => {
     return 'strong';
   }
 
-  // ── Email Domain Validation ──────────────────────────────────────
-
   const ALLOWED_DOMAIN = 'dseu.ac.in';
 
   function validateEmailDomain(email) {
     return email.toLowerCase().trim().endsWith('@' + ALLOWED_DOMAIN);
   }
 
-  // ── Registration → api/register.php ─────────────────────────────
-
-  /**
-   * Registers a new user via PHP backend.
-   * Returns a Promise<{ success, message }>.
-   */
   async function register({ fullname, email, username, password, confirmPassword }) {
 
-    // --- Client-side pre-checks ---
     if (!fullname || !email || !username || !password || !confirmPassword)
       return { success: false, message: 'All fields are required.' };
 
     if (fullname.trim().length < 2)
       return { success: false, message: 'Full name must be at least 2 characters.' };
 
-    // Email domain check
     if (!validateEmailDomain(email))
       return { success: false, message: `Only @${ALLOWED_DOMAIN} emails are allowed.` };
 
@@ -96,7 +71,6 @@ const Auth = (() => {
     if (password !== confirmPassword)
       return { success: false, message: 'Passwords do not match.' };
 
-    // --- Call PHP backend ---
     try {
       const body = new FormData();
       body.append('fullname',         fullname.trim());
@@ -107,19 +81,12 @@ const Auth = (() => {
 
       const res  = await fetch(apiUrl('register.php'), { method: 'POST', body });
       const data = await res.json();
-      return data; // { success, message }
+      return data;
     } catch (err) {
       return { success: false, message: 'Network error. Please try again.' };
     }
   }
 
-  // ── Login → api/login.php ────────────────────────────────────────
-
-  /**
-   * Logs in a user via PHP backend.
-   * On success, stores session in sessionStorage.
-   * Returns a Promise<{ success, message, user? }>.
-   */
   async function login({ usernameOrEmail, password }) {
     if (!usernameOrEmail || !password)
       return { success: false, message: 'Please enter your username/email and password.' };
@@ -133,7 +100,6 @@ const Auth = (() => {
       const data = await res.json();
 
       if (data.success && data.user) {
-        // Store session locally so session-guard.js can protect pages
         sessionStorage.setItem(SESSION_KEY, JSON.stringify({
           id:       data.user.id,
           fullname: data.user.fullname,
@@ -149,8 +115,6 @@ const Auth = (() => {
       return { success: false, message: 'Network error. Please try again.' };
     }
   }
-
-  // ── Session Management ───────────────────────────────────────────
 
   function getSession() {
     try {
@@ -175,7 +139,6 @@ const Auth = (() => {
     window.location.href = redirectTo;
   }
 
-  // ── Public API ───────────────────────────────────────────────────
   return {
     validatePassword,
     getPasswordStrength,

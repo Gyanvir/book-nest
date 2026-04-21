@@ -83,6 +83,50 @@
         <p>© 2026 BookNest | College Library Management System</p>
     </footer>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const session = Auth.getSession();
+            if (!session) return;
+
+            try {
+                const response = await fetch(`api/circulation.php?action=user_books&user_id=${session.id}`);
+                const result = await response.json();
+                
+                const tbody = document.querySelector('.books-table tbody');
+                
+                if (result.success && result.data && result.data.length > 0) {
+                    tbody.innerHTML = '';
+                    result.data.forEach(book => {
+                        const isReturned = book.return_date !== null;
+                        let statusText = isReturned ? '<span style="color:var(--bn-primary)">Returned</span>' : '<span style="color:var(--bn-danger)">Issued</span>';
+                        if (!isReturned) {
+                            const due = new Date(book.due_date);
+                            const now = new Date();
+                            if (now > due) {
+                                statusText = '<span style="color:var(--bn-danger)">Overdue</span>';
+                            }
+                        }
+                        
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${book.book_id}</td>
+                            <td>${book.material_name}</td>
+                            <td>${book.issue_date}</td>
+                            <td>${book.return_date || book.due_date + ' (Due)'}</td>
+                            <td>${statusText}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#999; padding: 24px;">No books currently borrowed.</td></tr>`;
+                }
+            } catch (err) {
+                console.error('Error fetching borrowed books:', err);
+                const tbody = document.querySelector('.books-table tbody');
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--bn-danger); padding: 24px;">Failed to load borrowed books.</td></tr>`;
+            }
+        });
+    </script>
 </body>
 
 </html>

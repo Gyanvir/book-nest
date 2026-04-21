@@ -22,6 +22,12 @@ try {
         } else {
             respond(false, 'Unknown POST action');
         }
+    } elseif ($method === 'GET') {
+        if ($action === 'user_books') {
+            getUserBooks();
+        } else {
+            respond(false, 'Unknown GET action');
+        }
     } else {
         respond(false, 'Method not allowed');
     }
@@ -144,6 +150,25 @@ function returnBook(array $d): void {
         $pdo->rollBack();
         respond(false, 'Error returning book: ' . $e->getMessage());
     }
+}
+
+function getUserBooks(): void {
+    $userId = $_GET['user_id'] ?? null;
+    if (!$userId) respond(false, 'Missing user_id parameter.');
+
+    $pdo = getDB();
+    $stmt = $pdo->prepare('
+        SELECT c.issue_id, c.issue_date, c.due_date, c.return_date, c.fine_amount,
+               b.book_id, b.title as material_name
+        FROM circulation c
+        JOIN books b ON c.book_id = b.book_id
+        WHERE c.user_id = :uid
+        ORDER BY c.issue_date DESC
+    ');
+    $stmt->execute([':uid' => $userId]);
+    $books = $stmt->fetchAll();
+
+    respond(true, 'User books retrieved successfully.', ['data' => $books]);
 }
 
 function getBody(): array {

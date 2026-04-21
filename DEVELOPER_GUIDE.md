@@ -73,11 +73,12 @@ The backend consists of standalone PHP files that act as API endpoints. They com
 *   **Helpers**: `getBody()` reads `php://input` to parse JSON payloads. `validate()` ensures required keys exist. `respond()` standardizes the JSON response format (`{ "success": boolean, "message": string, ... }`).
 
 ### `api/circulation.php`
-*   **Purpose**: Manages book issue and return operations, including available copy tracking and fine calculation.
-*   **Routing**: Uses `POST` with `?action=issue` and `?action=return`.
+*   **Purpose**: Manages book issue and return operations, including available copy tracking, fine calculation, and user history.
+*   **Routing**: Uses `POST` with `?action=issue` and `?action=return`. Uses `GET` with `?action=user_books`.
 *   **Functions**:
     *   `issueBook($data)`: Validates user/book, checks availability, creates a circulation record, and decrements book availability.
     *   `returnBook($data)`: Finds the active issue record, updates the return date, calculates late fines, and increments book availability.
+    *   `getUserBooks()`: Handles `GET ?action=user_books&user_id=X`. Retrieves a user's full borrowing history for display in the account dashboard.
 
 ### `api/stats.php`
 *   **Purpose**: Provides library overview metrics for dashboards.

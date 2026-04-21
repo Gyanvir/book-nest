@@ -25,24 +25,4 @@ if (registerForm) {
 
 const issueForm = document.querySelector(".issue-return-form");
 
-if (issueForm) {
-  issueForm.addEventListener("submit", function (event) {
-    const issueDate = new Date(
-      document.querySelector('input[name="issue_date"]').value,
-    );
-    const returnDate = new Date(
-      document.querySelector('input[name="return_date"]').value,
-    );
-
-    const timeDiff = returnDate - issueDate;
-    const daysDiff = timeDiff / (1000 * 60 * 60 * 24);
-
-    let fine = 0;
-
-    if (daysDiff > 15) {
-      fine = (daysDiff - 15) * 5;
-    }
-
-    alert("Borrowing Days: " + daysDiff + "\nFine Amount: ₹" + fine);
-  });
-}
+// Form submit handled by inline scripts in issue_return.html

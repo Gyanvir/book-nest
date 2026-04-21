@@ -50,22 +50,22 @@
 
                 <div class="dash-card">
                     <h3>Total Books</h3>
-                    <p>1,250</p>
+                    <p id="stat-total-books">--</p>
                 </div>
 
                 <div class="dash-card">
                     <h3>Issued Books</h3>
-                    <p>320</p>
+                    <p id="stat-issued-books">--</p>
                 </div>
 
                 <div class="dash-card">
                     <h3>Available</h3>
-                    <p>930</p>
+                    <p id="stat-available-books">--</p>
                 </div>
 
                 <div class="dash-card">
                     <h3>Registered Users</h3>
-                    <p>145</p>
+                    <p id="stat-total-users">--</p>
                 </div>
 
             </div>
@@ -77,15 +77,15 @@
                 <button onclick="location.href='account.html'" class="secondary-btn">👤 My Account</button>
             </div>
 
-            <div class="recent-activity">
-                <h2>Recent Activity</h2>
+            <!-- <div class="recent-activity">
+                <!-- <h2>Recent Activity</h2>
                 <ul>
                     <li>📖 "Data Structures" issued to Student ID 1023</li>
                     <li>📚 "DBMS Concepts" added to library</li>
                     <li>🔄 "Operating Systems" returned today</li>
                     <li>👤 New user registered: Priya Sharma</li>
-                </ul>
-            </div>
+                </ul> -->
+            <!-- </div> -->
         </main>
 
     </section>
@@ -102,6 +102,21 @@
                     el.style.display = 'none';
                 });
             }
+
+            // Fetch dynamic statistics
+            fetch('api/stats.php')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('stat-total-books').innerText = data.data.total_books;
+                        document.getElementById('stat-issued-books').innerText = data.data.issued_books;
+                        document.getElementById('stat-available-books').innerText = data.data.available_books;
+                        document.getElementById('stat-total-users').innerText = data.data.total_users;
+                    } else {
+                        console.error('Failed to load stats:', data.message);
+                    }
+                })
+                .catch(err => console.error('Error fetching stats:', err));
         });
     </script>
 

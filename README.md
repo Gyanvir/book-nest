@@ -210,6 +210,14 @@ All endpoints live in `api/`. Base: `http://localhost/book-nest/api/`
 | `PUT` | `?action=update` + JSON body | Update book |
 | `DELETE` | `?action=delete` + JSON body | Delete book |
 
+### Circulation & Stats
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `api/circulation.php?action=issue` | POST | Issue a book to a student |
+| `api/circulation.php?action=return` | POST | Return a book and calculate fine |
+| `api/stats.php` | GET | Fetch dynamic dashboard statistics |
+
 ### Auth
 
 | Endpoint | Method | Description |

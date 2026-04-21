@@ -39,6 +39,17 @@ The master catalog of library books.
 *   `description` (TEXT): Synopsis.
 *   `created_at`, `updated_at`: Timestamps.
 
+### 2.3. `circulation` Table
+Tracks issue and return of books and calculates fines.
+*   `issue_id` (INT, PK): Auto-incremented primary key.
+*   `user_id` (INT, FK): Links to `users.id`.
+*   `book_id` (INT, FK): Links to `books.book_id`.
+*   `issue_date` (DATE): Date of issue.
+*   `due_date` (DATE): Expected date of return.
+*   `return_date` (DATE): Actual date of return (nullable).
+*   `fine_amount` (DECIMAL): Fine calculated upon return.
+*   `created_at`, `updated_at`: Timestamps.
+
 ---
 
 ## 3. Backend API Layer (`api/`)
@@ -60,6 +71,18 @@ The backend consists of standalone PHP files that act as API endpoints. They com
     *   `updateBook($data)`: Handles `PUT ?action=update`. Updates an existing record. Contains logic to ensure `available` copies do not exceed `total_copies`.
     *   `deleteBook($data)`: Handles `DELETE ?action=delete`. Removes a book by ID.
 *   **Helpers**: `getBody()` reads `php://input` to parse JSON payloads. `validate()` ensures required keys exist. `respond()` standardizes the JSON response format (`{ "success": boolean, "message": string, ... }`).
+
+### `api/circulation.php`
+*   **Purpose**: Manages book issue and return operations, including available copy tracking and fine calculation.
+*   **Routing**: Uses `POST` with `?action=issue` and `?action=return`.
+*   **Functions**:
+    *   `issueBook($data)`: Validates user/book, checks availability, creates a circulation record, and decrements book availability.
+    *   `returnBook($data)`: Finds the active issue record, updates the return date, calculates late fines, and increments book availability.
+
+### `api/stats.php`
+*   **Purpose**: Provides library overview metrics for dashboards.
+*   **Routing**: Uses `GET` without action parameters.
+*   **Returns**: JSON payload containing `total_books`, `issued_books`, `available_books`, and `total_users`.
 
 ### `api/login.php`, `api/register.php`, `api/logout.php`
 *   **Purpose**: Handle authentication and session management.

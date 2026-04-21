@@ -89,3 +89,22 @@ INSERT IGNORE INTO books (isbn, title, author, publisher, year, genre, total_cop
 INSERT IGNORE INTO users (user_code, fullname, email, username, password_hash, role) VALUES
 ('BN1000', 'Library Admin', 'admin@booknest.edu', 'admin',
  '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin');
+
+-- ──────────────────────────────────────────────────────────────
+--  TABLE: circulation
+--  Links users to books and tracks borrowing history and late fees.
+-- ──────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS circulation (
+    issue_id    INT AUTO_INCREMENT PRIMARY KEY,
+    user_id     INT NOT NULL,
+    book_id     INT NOT NULL,
+    issue_date  DATE NOT NULL,
+    due_date    DATE NOT NULL,
+    return_date DATE DEFAULT NULL,
+    fine_amount DECIMAL(10,2) DEFAULT 0.00,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    CONSTRAINT fk_circ_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_circ_book FOREIGN KEY (book_id) REFERENCES books(book_id) ON DELETE CASCADE
+);

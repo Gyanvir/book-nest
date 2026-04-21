@@ -103,6 +103,38 @@
 
         document.getElementById('issueDate').addEventListener('change', calcFine);
         document.getElementById('returnDate').addEventListener('change', calcFine);
+
+        document.getElementById('issueReturnForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            if (!data.transaction_type) {
+                alert('Please select an action (Issue or Return).');
+                return;
+            }
+
+            try {
+                const response = await fetch(`api/circulation.php?action=${data.transaction_type}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert(result.message);
+                    form.reset();
+                    document.getElementById('fineCalcResult').textContent = '';
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert('An error occurred while processing the request.');
+            }
+        });
     </script>
 
 </body>

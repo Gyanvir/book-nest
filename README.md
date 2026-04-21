@@ -216,6 +216,7 @@ All endpoints live in `api/`. Base: `http://localhost/book-nest/api/`
 |----------|--------|-------------|
 | `api/circulation.php?action=issue` | POST | Issue a book to a student |
 | `api/circulation.php?action=return` | POST | Return a book and calculate fine |
+| `api/circulation.php?action=user_books&user_id={id}` | GET | Fetch a user's borrowed materials |
 | `api/stats.php` | GET | Fetch dynamic dashboard statistics |
 
 ### Auth
